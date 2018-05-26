@@ -16,6 +16,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -59,6 +61,7 @@ public class Polaganje {
     @Column(name = "Datum", unique = true, nullable = false)
     @NotNull(message = "Date cannot be empty")
     @Past
+    @Temporal(TemporalType.DATE)
     private Date datum;
 
     public Polaganje() {
