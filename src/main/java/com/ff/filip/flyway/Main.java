@@ -12,6 +12,7 @@ package com.ff.filip.flyway;
 public class Main {
     
     public static void main(String[] args) {
+        //testtiranje flyway - radi
         App a = new App();
         a.migrate();
     }
