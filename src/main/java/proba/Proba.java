@@ -5,25 +5,32 @@
  */
 package proba;
 
+import com.ff.filip.domen.Ispit;
+import com.ff.filip.domen.Mesto;
+import com.ff.filip.domen.Student;
 import com.ff.filip.domen.User;
 import com.ff.filip.jpa.controller.Controller;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author filip
  */
 public class Proba {
-    
+
     public static void main(String[] args) {
-        List<User> list = new ArrayList<>();
+
+        Student s = Controller.getInstance().findStudentById("123/123");
         
-        list = Controller.getInstance().findAllUsers();
-        for (User user : list) {
-            System.out.println(user.getUserId());
-            System.out.println(user.getUsername());
-            System.out.println(user.getPassword());
+        s.setBrInd("321/321");
+        s.setIme("wp");
+        try {
+            Controller.getInstance().updateStudent(s);
+        } catch (Exception ex) {
+            Logger.getLogger(Proba.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

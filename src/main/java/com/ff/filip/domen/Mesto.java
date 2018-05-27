@@ -5,12 +5,16 @@
  */
 package com.ff.filip.domen;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -18,8 +22,15 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "mesto")
-public class Mesto {
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Mesto.findAll", query = "SELECT m FROM Mesto m"),
+    @NamedQuery(name = "Mesto.findById", query = "SELECT m FROM Mesto m WHERE m.Ptt = :ptt"),
+    @NamedQuery(name = "Mesto.findByNaziv", query = "SELECT m FROM Mesto m WHERE m.naziv = :naziv")})
+public class Mesto implements Serializable{
 
+    private static final long serialVersionUID = 1L;
+    
     @Id
     @Column(name = "Ptt", unique = true, nullable = false)
     private int Ptt;

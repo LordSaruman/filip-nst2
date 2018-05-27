@@ -5,12 +5,16 @@
  */
 package com.ff.filip.domen;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -18,8 +22,15 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "ispit")
-public class Ispit {
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Ispit.findAll", query = "SELECT i FROM Ispit i"),
+    @NamedQuery(name = "Ispit.findBySifraIspita", query = "SELECT i FROM Ispit i WHERE i.sifraIspita = :sifraIspita"),
+    @NamedQuery(name = "Ispit.findByNazivIspita", query = "SELECT i FROM Ispit i WHERE i.nazivIspita = :nazivIspita")})
+public class Ispit implements Serializable{
 
+    private static final long serialVersionUID = 1L;
+    
     @Id
     @Column(name = "SifraIspita", unique = true, nullable = false)
     private int sifraIspita;

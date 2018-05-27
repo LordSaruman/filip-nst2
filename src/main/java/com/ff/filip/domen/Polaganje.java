@@ -5,6 +5,7 @@
  */
 package com.ff.filip.domen;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 import javax.persistence.Column;
@@ -15,6 +16,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -23,6 +26,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -30,8 +34,18 @@ import javax.validation.constraints.Past;
  */
 @Entity
 @Table(name = "polaganje")
-public class Polaganje {
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Polaganje.findAll", query = "SELECT p FROM Polaganje p"),
+    @NamedQuery(name = "Polaganje.findByBrInd", query = "SELECT p FROM Polaganje p WHERE p.student.brInd = :brInd"),
+    @NamedQuery(name = "Polaganje.findBySifraIspita", query = "SELECT p FROM Polaganje p WHERE p.ispit.sifraIspita = :sifraIspita"),
+    @NamedQuery(name = "Polaganje.findBySifraIspitnogRoka", query = "SELECT p FROM Polaganje p WHERE p.ispitniRok.sifraIspitnogRoka = :sifraIspitnogRoka"),
+    @NamedQuery(name = "Polaganje.findByOcena", query = "SELECT p FROM Polaganje p WHERE p.ocena = :ocena"),
+    @NamedQuery(name = "Polaganje.findByDatum", query = "SELECT p FROM Polaganje p WHERE p.datum = :datum")})
+public class Polaganje implements Serializable{
 
+    private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "PolaganjeId")

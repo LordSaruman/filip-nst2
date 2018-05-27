@@ -5,6 +5,7 @@
  */
 package com.ff.filip.domen;
 
+import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,9 +13,12 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -22,8 +26,16 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "student")
-public class Student {
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Student.findAll", query = "SELECT s FROM Student s"),
+    @NamedQuery(name = "Student.findByBrInd", query = "SELECT s FROM Student s WHERE s.brInd = :brInd"),
+    @NamedQuery(name = "Student.findByIme", query = "SELECT s FROM Student s WHERE s.ime = :ime"),
+    @NamedQuery(name = "Student.findByPrezime", query = "SELECT s FROM Student s WHERE s.prezime = :prezime")})
+public class Student implements Serializable{
 
+    private static final long serialVersionUID = 1L;
+    
     @Id
     @Column(name = "BrInd", unique = true, nullable = false)
     private String brInd;
