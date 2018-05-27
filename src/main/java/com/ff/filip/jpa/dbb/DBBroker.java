@@ -268,6 +268,16 @@ public class DBBroker {
         }
     }
 
+    public List<Polaganje> findAllPolaganje() {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("nst_filip");
+        EntityManager em = emf.createEntityManager();
+
+        List<Polaganje> list = em.createQuery("SELECT p FROM Polaganje p").getResultList();
+        em.close();
+        emf.close();
+        return list;
+    }
+
     public void persistAllPolaganja(List<Polaganje> list) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("nst_filip");
         EntityManager em = emf.createEntityManager();

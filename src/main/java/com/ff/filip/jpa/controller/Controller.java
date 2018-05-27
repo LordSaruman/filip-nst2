@@ -108,6 +108,10 @@ public class Controller {
         DBBroker.getInstance().updateStudent(student);
     }
     
+    public List<Polaganje> findAllPolaganje(){
+        return DBBroker.getInstance().findAllPolaganje();
+    }
+    
     public void persistPolaganja(List<Polaganje> list){
         DBBroker.getInstance().persistAllPolaganja(list);
     }

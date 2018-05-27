@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Master_subreport1" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="af626485-fee3-42fe-8913-eaa54802ca3d">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="PolaganjeId" class="java.lang.Integer" isForPrompting="false"/>
+	<parameter name="BrInd" class="java.lang.String" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[SELECT * FROM polaganje p JOIN student s ON p.`BrInd` = s.`BrInd` JOIN ispit i ON p.`SifraIspita` = i.`SifraIspita` JOIN `ispitnirok` ip ON p.`SifraIspitnogRoka` = ip.`SifraIspitnogRoka`  
+WHERE s.`BrInd`= $P{BrInd}]]>
+	</queryString>
+	<field name="PolaganjeId" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="BrInd" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="SifraIspita" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="SifraIspitnogRoka" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Ocena" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Datum" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Ime" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Prezime" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Ptt" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="NazivIspita" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="NazivIspitnogRoka" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="avgOcena" class="java.lang.Double" calculation="Average">
+		<variableExpression><![CDATA[$F{Ocena}]]></variableExpression>
+	</variable>
+	<variable name="sumAllPasses" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[new Integer($F{Ocena} > 5 ? 1:0)]]></variableExpression>
+	</variable>
+	<group name="PolaganjeId">
+		<groupExpression><![CDATA[$F{PolaganjeId}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="43" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="18" width="100" height="20" uuid="232ebb93-2926-45c8-a463-6f8792bec079"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Polaganje ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="18" width="100" height="20" uuid="dbdaddaf-e88e-4d82-950d-7a9537b0a03f"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Naziv ispita]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="18" width="140" height="20" uuid="b843ae47-af2b-464f-9418-069916321c97"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Naziv Ispitnog roka]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="340" y="18" width="100" height="20" uuid="ec1e3738-ddfa-4775-961d-4483c9465fe2"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ocena]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="440" y="18" width="100" height="20" uuid="93120b42-8ce8-43d4-9084-2f74ce455e13"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Datum]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="31" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="100" height="20" uuid="5763850b-fb03-43e3-b8d5-f90b95eea8ba"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{PolaganjeId}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="0" width="100" height="20" uuid="0a3438d1-d213-4f07-bbd1-1b71c81ff3ae"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{NazivIspita}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="200" y="0" width="140" height="20" uuid="3591b697-0f68-4b9a-afd4-87616ee346e4"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{NazivIspitnogRoka}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="340" y="0" width="100" height="20" uuid="1a1c60a5-05c6-4c14-b128-ee9bf4238c96"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{Ocena}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="440" y="0" width="100" height="20" uuid="a477a7b3-bd3a-47d6-9c81-29c33e5d6f58"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{Datum}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="66" splitType="Stretch">
+			<staticText>
+				<reportElement x="15" y="4" width="239" height="20" uuid="28fd083b-d992-4d86-a12c-d506d5e89a87"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ukupan broj uspesnih polaganja:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="15" y="35" width="184" height="20" uuid="3f80bc3b-0938-4c05-b7e0-a6cb90270b93"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ukupna prosecna ocena:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="200" y="35" width="100" height="20" uuid="05d4aa1a-ccf2-4b44-9802-18e3e870fddf"/>
+				<textElement>
+					<font isItalic="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{avgOcena}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="254" y="4" width="100" height="20" uuid="06cb5071-a4d6-4288-af96-143e33e1c079"/>
+				<textElement>
+					<font isItalic="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumAllPasses}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>
