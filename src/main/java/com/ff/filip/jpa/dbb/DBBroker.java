@@ -8,11 +8,13 @@ package com.ff.filip.jpa.dbb;
 import com.ff.filip.domen.Ispit;
 import com.ff.filip.domen.IspitniRok;
 import com.ff.filip.domen.Mesto;
+import com.ff.filip.domen.Polaganje;
 import com.ff.filip.domen.Student;
 import com.ff.filip.domen.User;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
@@ -42,7 +44,6 @@ public class DBBroker {
         } else {
             return u;
         }
-
     }
 
     public List<User> findAllUsers() {
@@ -265,5 +266,58 @@ public class DBBroker {
             em.close();
             emf.close();
         }
+    }
+
+    public void persistAllPolaganja(List<Polaganje> list) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("nst_filip");
+        EntityManager em = emf.createEntityManager();
+
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+
+        for (Polaganje polaganje : list) {
+            Polaganje p = new Polaganje();
+            p.setDatum(polaganje.getDatum());
+            p.setIspit(polaganje.getIspit());
+            p.setIspitniRok(polaganje.getIspitniRok());
+            p.setOcena(polaganje.getOcena());
+            p.setStudent(polaganje.getStudent());
+
+            em.persist(p);
+        }
+
+        tx.commit();
+        em.close();
+        emf.close();
+    }
+
+    public void persistPolaganje(Polaganje polaganje) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("nst_filip");
+        EntityManager em = emf.createEntityManager();
+
+        Polaganje p = new Polaganje();
+        p.setDatum(polaganje.getDatum());
+        p.setIspit(polaganje.getIspit());
+        p.setIspitniRok(polaganje.getIspitniRok());
+        p.setOcena(polaganje.getOcena());
+        p.setStudent(polaganje.getStudent());
+
+        em.getTransaction().begin();
+        em.persist(p);
+        em.getTransaction().commit();
+        em.close();
+        emf.close();
+    }
+
+    public void deletePolaganjeById(Polaganje polaganje) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("nst_filip");
+        EntityManager em = emf.createEntityManager();
+
+        Polaganje p = em.find(Polaganje.class, polaganje.getIdPolaganje());
+        em.getTransaction().begin();
+        em.remove(p);
+        em.getTransaction().commit();
+        em.close();
+        emf.close();
     }
 }

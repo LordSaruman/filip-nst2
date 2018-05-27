@@ -8,6 +8,7 @@ package com.ff.filip.jpa.controller;
 import com.ff.filip.domen.Ispit;
 import com.ff.filip.domen.IspitniRok;
 import com.ff.filip.domen.Mesto;
+import com.ff.filip.domen.Polaganje;
 import com.ff.filip.domen.Student;
 import com.ff.filip.domen.User;
 import com.ff.filip.jpa.dbb.DBBroker;
@@ -105,5 +106,17 @@ public class Controller {
     
     public void updateStudent(Student student) throws Exception{
         DBBroker.getInstance().updateStudent(student);
+    }
+    
+    public void persistPolaganja(List<Polaganje> list){
+        DBBroker.getInstance().persistAllPolaganja(list);
+    }
+    
+    public void persistPolaganje(Polaganje polaganje){
+        DBBroker.getInstance().persistPolaganje(polaganje);
+    }
+    
+    public void deletePolaganjeById(Polaganje polaganje){
+        DBBroker.getInstance().deletePolaganjeById(polaganje);
     }
 }

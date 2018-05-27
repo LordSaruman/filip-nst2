@@ -38,6 +38,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Polaganje.findAll", query = "SELECT p FROM Polaganje p"),
     @NamedQuery(name = "Polaganje.findByBrInd", query = "SELECT p FROM Polaganje p WHERE p.student.brInd = :brInd"),
+    @NamedQuery(name = "Polaganje.findByPolaganjeId", query = "SELECT p FROM Polaganje p WHERE p.idPolaganje = :idPolaganje"),
     @NamedQuery(name = "Polaganje.findBySifraIspita", query = "SELECT p FROM Polaganje p WHERE p.ispit.sifraIspita = :sifraIspita"),
     @NamedQuery(name = "Polaganje.findBySifraIspitnogRoka", query = "SELECT p FROM Polaganje p WHERE p.ispitniRok.sifraIspitnogRoka = :sifraIspitnogRoka"),
     @NamedQuery(name = "Polaganje.findByOcena", query = "SELECT p FROM Polaganje p WHERE p.ocena = :ocena"),
