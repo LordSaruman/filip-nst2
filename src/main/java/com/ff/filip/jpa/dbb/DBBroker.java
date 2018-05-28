@@ -12,6 +12,8 @@ import com.ff.filip.domen.Polaganje;
 import com.ff.filip.domen.Student;
 import com.ff.filip.domen.User;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -31,6 +33,24 @@ public class DBBroker {
             dbb = new DBBroker();
         }
         return dbb;
+    }
+
+    public User checkUserPass(String username, String password) {
+        try {
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("nst_filip");
+            EntityManager em = emf.createEntityManager();
+            User userDB = null;
+
+            userDB = (User) em.createQuery("SELECT u FROM User u WHERE u.username = :user AND u.password = :pass")
+                    .setParameter("user", username).getSingleResult();
+
+            if (userDB.getPassword().equals(password)) {
+                return userDB;
+            }
+        } catch (Exception e) {
+            Logger.getLogger(DBBroker.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return null;
     }
 
     public User logInUser(User user) throws Exception {

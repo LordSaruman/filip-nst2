@@ -11,121 +11,111 @@ import com.ff.filip.domen.Mesto;
 import com.ff.filip.domen.Polaganje;
 import com.ff.filip.domen.Student;
 import com.ff.filip.domen.User;
-import com.ff.filip.jpa.dbb.DBBroker;
 import java.util.List;
 
 /**
  *
  * @author filip
  */
-public class Controller {
-
-    private static Controller controller;
-
-    public static Controller getInstance() {
-        if (controller == null) {
-            controller = new Controller();
-        }
-        return controller;
-    }
-
+public class Facade {
+    
     public User checkUserPass(String username, String password) {
-        return DBBroker.getInstance().checkUserPass(username, password);
+        return Controller.getInstance().checkUserPass(username, password);
     }
 
     public User logInUser(User user) throws Exception {
-        return DBBroker.getInstance().logInUser(user);
+        return Controller.getInstance().logInUser(user);
     }
 
     public List<User> findAllUsers() {
-        return DBBroker.getInstance().findAllUsers();
+        return Controller.getInstance().findAllUsers();
     }
 
     public User findByUserId(int i) {
-        return DBBroker.getInstance().findByUserId(i);
+        return Controller.getInstance().findByUserId(i);
     }
 
     public List<Mesto> findAllMesto() {
-        return DBBroker.getInstance().findAllMesto();
+        return Controller.getInstance().findAllMesto();
     }
 
     public Mesto findMestoByPtt(int i) {
-        return DBBroker.getInstance().findMestoByPtt(i);
+        return Controller.getInstance().findMestoByPtt(i);
     }
 
     public Mesto findMestoByName(String name) {
-        return DBBroker.getInstance().findMestoByName(name);
+        return Controller.getInstance().findMestoByName(name);
     }
 
     public List<Ispit> findAllIspit() {
-        return DBBroker.getInstance().findAllIspit();
+        return Controller.getInstance().findAllIspit();
     }
 
     public Ispit findIspitById(int i) {
-        return DBBroker.getInstance().findIspitById(i);
+        return Controller.getInstance().findIspitById(i);
     }
 
     public Ispit findIspitByName(String name) {
-        return DBBroker.getInstance().findIspitByName(name);
+        return Controller.getInstance().findIspitByName(name);
     }
 
     public void persistIspit(Ispit ispit) {
-        DBBroker.getInstance().persistIspit(ispit);
+        Controller.getInstance().persistIspit(ispit);
     }
 
     public void deleteIspitById(Ispit ispit) {
-        DBBroker.getInstance().deleteIspitById(ispit);
+        Controller.getInstance().deleteIspitById(ispit);
     }
 
     public void updateIspit(Ispit ispit) throws Exception {
-        DBBroker.getInstance().updateIspit(ispit);
+        Controller.getInstance().updateIspit(ispit);
     }
 
     public List<IspitniRok> findAllIspitniRok() {
-        return DBBroker.getInstance().findAllIspitniRok();
+        return Controller.getInstance().findAllIspitniRok();
     }
 
     public IspitniRok findIspitniRokById(int id) {
-        return DBBroker.getInstance().findIspitniRokById(id);
+        return Controller.getInstance().findIspitniRokById(id);
     }
 
     public IspitniRok findIspitniRokByName(String name) {
-        return DBBroker.getInstance().findIspitniRokByName(name);
+        return Controller.getInstance().findIspitniRokByName(name);
     }
 
     public Student findStudentById(String id) {
-        return DBBroker.getInstance().findStudentById(id);
+        return Controller.getInstance().findStudentById(id);
     }
 
     public List<Student> findAllStudent() {
-        return DBBroker.getInstance().findAllStudent();
+        return Controller.getInstance().findAllStudent();
     }
 
     public void persistStudent(Student student) {
-        DBBroker.getInstance().persistStudent(student);
+        Controller.getInstance().persistStudent(student);
     }
 
     public void deleteStudentById(Student student) {
-        DBBroker.getInstance().deleteStudentById(student);
+        Controller.getInstance().deleteStudentById(student);
     }
 
     public void updateStudent(Student student) throws Exception {
-        DBBroker.getInstance().updateStudent(student);
+        Controller.getInstance().updateStudent(student);
     }
 
     public List<Polaganje> findAllPolaganje() {
-        return DBBroker.getInstance().findAllPolaganje();
+        return Controller.getInstance().findAllPolaganje();
     }
 
     public void persistPolaganja(List<Polaganje> list) {
-        DBBroker.getInstance().persistAllPolaganja(list);
+        Controller.getInstance().persistPolaganja(list);
     }
 
     public void persistPolaganje(Polaganje polaganje) {
-        DBBroker.getInstance().persistPolaganje(polaganje);
+        Controller.getInstance().persistPolaganje(polaganje);
     }
 
     public void deletePolaganjeById(Polaganje polaganje) {
-        DBBroker.getInstance().deletePolaganjeById(polaganje);
+        Controller.getInstance().deletePolaganjeById(polaganje);
     }
 }
