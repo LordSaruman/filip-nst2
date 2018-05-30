@@ -21,111 +21,125 @@ import java.util.List;
 public class Controller {
 
     private static Controller controller;
+    private static DBBroker dbb;
 
     public static Controller getInstance() {
         if (controller == null) {
             controller = new Controller();
+            dbb = new DBBroker();
         }
         return controller;
     }
 
     public User checkUserPass(String username, String password) {
-        return DBBroker.getInstance().checkUserPass(username, password);
+        return dbb.checkUserPass(username, password);
     }
 
     public User logInUser(User user) throws Exception {
-        return DBBroker.getInstance().logInUser(user);
+        return dbb.logInUser(user);
     }
 
     public List<User> findAllUsers() {
-        return DBBroker.getInstance().findAllUsers();
+        return dbb.findAllUsers();
     }
 
     public User findByUserId(int i) {
-        return DBBroker.getInstance().findByUserId(i);
+        return dbb.findByUserId(i);
     }
 
     public List<Mesto> findAllMesto() {
-        return DBBroker.getInstance().findAllMesto();
+        return dbb.findAllMesto();
     }
 
     public Mesto findMestoByPtt(int i) {
-        return DBBroker.getInstance().findMestoByPtt(i);
+        return dbb.findMestoByPtt(i);
     }
 
     public Mesto findMestoByName(String name) {
-        return DBBroker.getInstance().findMestoByName(name);
+        return dbb.findMestoByName(name);
+    }
+
+    public void persistMesto(Mesto mesto) {
+        dbb.peristMesto(mesto);
+    }
+
+    public void deleteMestoById(Mesto mesto) {
+        dbb.deleteMestoById(mesto);
+    }
+
+    public void updateMesto(Mesto mesto) throws Exception {
+        dbb.updateMesto(mesto);
     }
 
     public List<Ispit> findAllIspit() {
-        return DBBroker.getInstance().findAllIspit();
+        return dbb.findAllIspit();
     }
 
     public Ispit findIspitById(int i) {
-        return DBBroker.getInstance().findIspitById(i);
+        return dbb.findIspitById(i);
     }
 
     public Ispit findIspitByName(String name) {
-        return DBBroker.getInstance().findIspitByName(name);
+        return dbb.findIspitByName(name);
     }
 
     public void persistIspit(Ispit ispit) {
-        DBBroker.getInstance().persistIspit(ispit);
+        dbb.persistIspit(ispit);
     }
 
     public void deleteIspitById(Ispit ispit) {
-        DBBroker.getInstance().deleteIspitById(ispit);
+        dbb.deleteIspitById(ispit);
     }
 
     public void updateIspit(Ispit ispit) throws Exception {
-        DBBroker.getInstance().updateIspit(ispit);
+        dbb.updateIspit(ispit);
     }
 
     public List<IspitniRok> findAllIspitniRok() {
-        return DBBroker.getInstance().findAllIspitniRok();
+        return dbb.findAllIspitniRok();
     }
 
     public IspitniRok findIspitniRokById(int id) {
-        return DBBroker.getInstance().findIspitniRokById(id);
+        return dbb.findIspitniRokById(id);
     }
 
     public IspitniRok findIspitniRokByName(String name) {
-        return DBBroker.getInstance().findIspitniRokByName(name);
+        return dbb.findIspitniRokByName(name);
     }
 
     public Student findStudentById(String id) {
-        return DBBroker.getInstance().findStudentById(id);
+        return dbb.findStudentById(id);
     }
 
     public List<Student> findAllStudent() {
-        return DBBroker.getInstance().findAllStudent();
+        return dbb.findAllStudent();
     }
 
     public void persistStudent(Student student) {
-        DBBroker.getInstance().persistStudent(student);
+        dbb.persistStudent(student);
     }
 
     public void deleteStudentById(Student student) {
-        DBBroker.getInstance().deleteStudentById(student);
+        dbb.deleteStudentById(student);
     }
 
     public void updateStudent(Student student) throws Exception {
-        DBBroker.getInstance().updateStudent(student);
+        dbb.updateStudent(student);
     }
 
     public List<Polaganje> findAllPolaganje() {
-        return DBBroker.getInstance().findAllPolaganje();
+        return dbb.findAllPolaganje();
     }
 
     public void persistPolaganja(List<Polaganje> list) {
-        DBBroker.getInstance().persistAllPolaganja(list);
+        dbb.persistAllPolaganja(list);
     }
 
     public void persistPolaganje(Polaganje polaganje) {
-        DBBroker.getInstance().persistPolaganje(polaganje);
+        dbb.persistPolaganje(polaganje);
     }
 
     public void deletePolaganjeById(Polaganje polaganje) {
-        DBBroker.getInstance().deletePolaganjeById(polaganje);
+        dbb.deletePolaganjeById(polaganje);
     }
 }

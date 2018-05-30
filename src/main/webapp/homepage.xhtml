@@ -1,12 +1,47 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
     <h:head>
-        <title>Facelet Title</title>
+        <title>Pocetna strana</title>
+
+        <link rel="shortcut icon" type="image/x-icon" href="#{resource['images/favicon.ico']}"/>
+        <h:outputStylesheet library="css" name="bootstrap.min.css"/>
+        <h:outputStylesheet library="css" name="bootstrap-theme.css" />
+
     </h:head>
     <h:body>
-        Hello from Facelets homepage
+        <b:navBar class="navbar navbar-inverse navbar-fixed-top" fluid="true" brand="filip-nst2">
+            <div class="container">
+                <div class="navbar-header">
+                    <b:navbarLinks>
+                        <b:navLink value="Homepage" href="homepage.xhtml"></b:navLink>
+                        <b:dropMenu value="Student CRUD" icon-awesome="fa-graduation-cap">
+                            <b:navLink value="Dodaj novog studenta" href="DODAJ"></b:navLink>
+                            <b:navLink value="Prikazi sve studente" href="allstudents.xhtml"></b:navLink>
+                        </b:dropMenu>
+                        <b:dropMenu value="Ispit CRUD" icon-awesome="fa-stack-overflow">
+                            <b:navLink value="Dodaj novi ispit" href="DODAJ"></b:navLink>
+                            <b:navLink value="Prikazi sve ispite" href="DODAJ"></b:navLink>
+                        </b:dropMenu>
+                        <b:navLink value="Unesi polaganje" href="homepage.xhtml" icon-awesome="fa-university"></b:navLink>
+                        <!--                        <h:form>
+                                                    <b:navCommandLink icon-awesome="power-off" value="Logout"
+                                                                      style="margin-right: 50px;"><f:ajax execute="@this"/>
+                                                    </b:navCommandLink>
+                                                </h:form>-->
+                    </b:navbarLinks>   
+                    <!--                    <h:form>
+                                            <b:commandButton class="btn btn-danger center_content" value="Izloguj se" icon-awesome="fa-sign-out" icon-align="right" onclick="#{mbLogin.logout()}"></b:commandButton>
+                                            <b:button class="btn btn-danger center_content" value="Izloguj se" icon-awesome="fa-sign-out" icon-align="right" onclick="#{mbLogin.logout()}"></b:button>
+                                        </h:form>-->
+<!--                    <a href="#{mbLogin.logout()}" class="btn btn-danger">Logout</a>-->
+                </div>
+            </div>
+        </b:navBar>
     </h:body>
 </html>
 

@@ -11,29 +11,33 @@ import com.ff.filip.domen.Mesto;
 import com.ff.filip.domen.Polaganje;
 import com.ff.filip.domen.Student;
 import com.ff.filip.domen.User;
+import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.Resource;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 /**
  *
  * @author filip
  */
-public class DBBroker {
+@Named
+@RequestScoped
+public class DBBroker implements Serializable{
 
-    private static DBBroker dbb;
-
-    public static DBBroker getInstance() {
-        if (dbb == null) {
-            dbb = new DBBroker();
-        }
-        return dbb;
-    }
+    @PersistenceContext(unitName = "nst_filip")
+    private EntityManager em;
+    
+    @Resource
+    private javax.transaction.UserTransaction utx;
 
     public User checkUserPass(String username, String password) {
         try {
@@ -115,6 +119,50 @@ public class DBBroker {
         em.close();
         emf.close();
         return m;
+    }
+
+    public void peristMesto(Mesto mesto) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("nst_filip");
+        EntityManager em = emf.createEntityManager();
+
+        em.getTransaction().begin();
+        em.persist(mesto);
+        em.getTransaction().commit();
+        em.close();
+        emf.close();
+    }
+
+    public void deleteMestoById(Mesto mesto) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("nst_filip");
+        EntityManager em = emf.createEntityManager();
+
+        Mesto m = em.find(Mesto.class, mesto.getPtt());
+        em.getTransaction().begin();
+        em.remove(m);
+        em.getTransaction().commit();
+        em.close();
+        emf.close();
+    }
+
+    public void updateMesto(Mesto mesto) throws Exception {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("nst_filip");
+        EntityManager em = emf.createEntityManager();
+
+        Mesto m = em.find(Mesto.class, mesto.getPtt());
+        try {
+            if (m != null) {
+                em.getTransaction().begin();
+                m = em.merge(mesto);
+                em.getTransaction().commit();
+            } else {
+                throw new Exception("Mesto with that ID does not exist!");
+            }
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            em.close();
+            emf.close();
+        }
     }
 
     public List<Ispit> findAllIspit() {
@@ -251,20 +299,21 @@ public class DBBroker {
         em.getTransaction().begin();
         em.persist(student);
         em.getTransaction().commit();
+        em.flush();
         em.close();
         emf.close();
     }
 
     public void deleteStudentById(Student student) {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("nst_filip");
-        EntityManager em = emf.createEntityManager();
-
-        Student s = em.find(Student.class, student.getBrInd());
-        em.getTransaction().begin();
-        em.remove(s);
-        em.getTransaction().commit();
-        em.close();
-        emf.close();
+        try {
+            utx.begin();
+            //Student s = em.find(Student.class, student.getBrInd());
+            em.remove(student);
+            utx.commit();
+        } catch (Exception e) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
+            throw new RuntimeException(e);
+        }
     }
 
     public void updateStudent(Student student) throws Exception {

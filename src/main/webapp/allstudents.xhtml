@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Pocetna strana</title>
+
+        <link rel="shortcut icon" type="image/x-icon" href="#{resource['images/favicon.ico']}"/>
+        <h:outputStylesheet library="css" name="bootstrap.min.css"/>
+        <h:outputStylesheet library="css" name="bootstrap-theme.css" />
+
+    </h:head>
+    <h:body>
+        <b:navBar class="navbar navbar-inverse navbar-fixed-top" fluid="true" brand="filip-nst2">
+            <div class="container">
+                <div class="navbar-header">
+                    <b:navbarLinks>
+                        <b:navLink value="Homepage" href="homepage.xhtml"></b:navLink>
+                        <b:dropMenu value="Student CRUD" icon-awesome="fa-graduation-cap">
+                            <b:navLink value="Dodaj novog studenta" href="DODAJ"></b:navLink>
+                            <b:navLink value="Prikazi sve studente" href="allstudents.xhtml"></b:navLink>
+                        </b:dropMenu>
+                        <b:dropMenu value="Ispit CRUD" icon-awesome="fa-stack-overflow">
+                            <b:navLink value="Dodaj novi ispit" href="DODAJ"></b:navLink>
+                            <b:navLink value="Prikazi sve ispite" href="DODAJ"></b:navLink>
+                        </b:dropMenu>
+                        <b:navLink value="Unesi polaganje" href="homepage.xhtml" icon-awesome="fa-university"></b:navLink>
+                    </b:navbarLinks>   
+                </div>
+            </div>
+        </b:navBar>
+
+
+        <div>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+
+            <div class="panel-body">
+                <h:form id="j_idt237">
+                    <div id="qwerty1" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="dataTables_length" id="qwerty2">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h:form>
+                                    <f:metadata>
+                                        <f:event type="preRenderView" listener="#{mbStudent.findAllStudent()}"/>
+                                    </f:metadata>
+                                    <b:dataTable value="#{mbStudent.list}"
+                                                 var="student"
+                                                 class="table table-bordered table-striped table-hover dataTable no-footer" 
+                                                 border="true" 
+                                                 searching="true">
+                                        <f:facet name="header">
+                                            <tr role = "row">
+                                                <th colspan="1" rowspan="2" class="sorting" style="width: 250px;">Student - broj indeksa</th>
+                                                <th colspan="2" rowspan="1">Osnovne info o studentu</th>
+                                                <th colspan="2" rowspan="1">Mesto info</th>
+                                                <th colspan="2" rowspan="1">Dodatne akcije</th>
+                                            </tr>
+                                            <tr role="row">
+                                                <th class="sorting" tabindex="0" rowspan="1" colspan="1" style="width: 125px;">Ime</th>
+                                                <th class="sorting" tabindex="0" rowspan="1" colspan="1" style="width: 125px;">Prezime</th>
+                                                <th class="sorting" tabindex="0" rowspan="1" colspan="1" style="width: 125px;">Ptt mesta</th>
+                                                <th class="sorting" tabindex="0" rowspan="1" colspan="1" style="width: 125px;">Naziv mesta</th>
+                                                <th tabindex="0" rowspan="1" colspan="1" style="width: 25px;">Izmena studenta</th>
+                                                <th tabindex="0" rowspan="1" colspan="1" style="width: 25px;">Brisanje studenta</th>
+                                            </tr>
+                                        </f:facet>
+                                        <b:dataTableColumn value="#{student.brInd}" data-order="#{mbStudent.student.brInd}"/>
+                                        <b:dataTableColumn value="#{student.ime}" />
+                                        <b:dataTableColumn value="#{student.prezime}" />
+                                        <b:dataTableColumn value="#{student.mesto.ptt}" />
+                                        <b:dataTableColumn value="#{student.mesto.naziv}" />
+                                        <b:dataTableColumn><a href="homepage.xhtml"><i class="fa fa-edit"></i></a></b:dataTableColumn>
+                                        <b:dataTableColumn>
+                                            <a onclick="$('.modalPseudoClass').modal()"><i class="fa fa-remove"></i></a>
+                                            <!--<b:button look="danger" onclick="$('.modalPseudoClass').modal()" size="xs" icon-awesome="fa fa-remove" ></b:button>-->
+                                            <b:commandButton look="primary" actionListener="#{mbStudent.setStudentForDeleting(student)}" size="xs" icon-awesome="fa fa-remove"></b:commandButton>
+                                        </b:dataTableColumn>
+                                    </b:dataTable>
+
+                                    <h:form>
+                                        <b:modal id="modal-student" title="Upozorenje" styleClass="modalPseudoClass">
+                                            <p>Da li ste sigurni da zelite da obrisete studenta?</p>
+                                            <f:facet name="footer">
+                                                <b:button value="Zatvori" dismiss="modal" />
+                                                <h:commandButton value="Obrisi" action="#{mbStudent.deleteStudent()}" class="btn btn-primary" ></h:commandButton>
+                                            </f:facet>
+                                        </b:modal>
+                                    </h:form>
+                                </h:form>
+                            </div>
+                        </div>
+                    </div>
+                </h:form>
+            </div>
+
+
+
+
+
+            <br></br>
+            <br></br>
+            <br></br>
+        </div>
+    </h:body>
+</html>
