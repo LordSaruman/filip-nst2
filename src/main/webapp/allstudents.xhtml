@@ -84,7 +84,7 @@
                                         <b:dataTableColumn>
                                             <a onclick="$('.modalPseudoClass').modal()"><i class="fa fa-remove"></i></a>
                                             <!--<b:button look="danger" onclick="$('.modalPseudoClass').modal()" size="xs" icon-awesome="fa fa-remove" ></b:button>-->
-                                            <b:commandButton look="primary" actionListener="#{mbStudent.setStudentForDeleting(student)}" size="xs" icon-awesome="fa fa-remove"></b:commandButton>
+                                            <b:commandButton look="primary" action="#{mbStudent.setStudentForDeleting(student)}" onclick="$('.modalPseudoClass').modal()" size="xs" icon-awesome="fa fa-remove"></b:commandButton>
                                         </b:dataTableColumn>
                                     </b:dataTable>
 
@@ -93,7 +93,7 @@
                                             <p>Da li ste sigurni da zelite da obrisete studenta?</p>
                                             <f:facet name="footer">
                                                 <b:button value="Zatvori" dismiss="modal" />
-                                                <h:commandButton value="Obrisi" action="#{mbStudent.deleteStudent()}" class="btn btn-primary" ></h:commandButton>
+                                                <h:commandButton value="Obrisi" actionListener="#{mbStudent.deleteStudent()}" onclick="$('.modalPseudoClass').modal()" class="btn btn-primary" ></h:commandButton>
                                             </f:facet>
                                         </b:modal>
                                     </h:form>
@@ -105,6 +105,7 @@
             </div>
 
 
+            
 
 
 
