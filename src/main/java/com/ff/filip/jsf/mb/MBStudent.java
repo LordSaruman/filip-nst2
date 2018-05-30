@@ -5,6 +5,7 @@
  */
 package com.ff.filip.jsf.mb;
 
+import com.ff.filip.domen.Mesto;
 import com.ff.filip.domen.Student;
 import com.ff.filip.jpa.dbb.StudentService;
 import java.io.Serializable;
@@ -23,14 +24,17 @@ public class MBStudent implements Serializable {
 
     @Inject
     private StudentService ss;
-    
+
     private Student student;
-    Student studentForDeleting;
+    private Student studentForEditing;
+    private Student studentForDeleting;
     private List<Student> list;
+    private List<Mesto> listMesto;
 
     public MBStudent() {
         student = new Student();
         studentForDeleting = new Student();
+        studentForEditing = new Student();
     }
 
     public Student getStudent() {
@@ -41,12 +45,12 @@ public class MBStudent implements Serializable {
         this.student = student;
     }
 
-    public List<Student> getList() {
-        return list;
+    public Student getStudentForEditing() {
+        return studentForEditing;
     }
 
-    public void setList(List<Student> list) {
-        this.list = list;
+    public void setStudentForEditing(Student studentForEditing) {
+        this.studentForEditing = studentForEditing;
     }
 
     public Student getStudentForDeleting() {
@@ -55,20 +59,48 @@ public class MBStudent implements Serializable {
 
     public void setStudentForDeleting(Student studentForDeleting) {
         this.studentForDeleting = studentForDeleting;
-        System.out.println(studentForDeleting.getBrInd());
-        System.out.println(studentForDeleting.getIme());
+    }
+
+    public List<Student> getList() {
+        return list;
+    }
+
+    public void setList(List<Student> list) {
+        this.list = list;
+    }
+
+    public List<Mesto> getListMesto() {
+        return listMesto;
+    }
+
+    public void setListMesto(List<Mesto> listMesto) {
+        this.listMesto = listMesto;
     }
 
     public void findAllStudent() {
-        //list = Controller.getInstance().findAllStudent();
         list = ss.findAllStudent();
     }
-    
-    public void deleteStudent(){
-        System.out.println(studentForDeleting.getBrInd());
-        System.out.println(studentForDeleting.getIme());
-        //Controller.getInstance().deleteStudentById(studentForDeleting);
-        //mbsp.odradi(studentForDeleting);
+
+    public void findAllMesto() {
+        listMesto = ss.findAllMesto();
+    }
+
+    public void deleteStudent() {
         ss.deleteStudentById(studentForDeleting);
+    }
+
+    public void persistStudent() {
+        ss.persistStudent(student);
+        student = new Student();
+    }
+
+    public void persistEditStudent() {
+        ss.deleteStudentById(studentForEditing);
+        ss.persistStudent(studentForEditing);
+        studentForEditing = new Student();
+    }
+
+    public void loadMesta() {
+        findAllMesto();
     }
 }

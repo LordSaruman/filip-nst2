@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <h:head>
+        <title>Izmeni studenta</title>
+
+        <link rel="shortcut icon" type="image/x-icon" href="#{resource['images/favicon.ico']}"/>
+        <h:outputStylesheet library="css" name="bootstrap.min.css"/>
+        <h:outputStylesheet library="css" name="bootstrap-theme.css" />
+        <h:outputStylesheet library="css" name="start.css" />
+
+    </h:head>
+    <h:body>
+        <b:navBar class="navbar navbar-inverse navbar-fixed-top" fluid="true" brand="filip-nst2">
+            <div class="container">
+                <div class="navbar-header">
+                    <b:navbarLinks>
+                        <b:navLink value="Homepage" href="homepage.xhtml"></b:navLink>
+                        <b:dropMenu value="Student CRUD" icon-awesome="fa-graduation-cap">
+                            <b:navLink value="Dodaj novog studenta" href="addstudent.xhtml"></b:navLink>
+                            <b:navLink value="Prikazi sve studente" href="allstudents.xhtml"></b:navLink>
+                        </b:dropMenu>
+                        <b:dropMenu value="Ispit CRUD" icon-awesome="fa-stack-overflow">
+                            <b:navLink value="Dodaj novi ispit" href="DODAJ"></b:navLink>
+                            <b:navLink value="Prikazi sve ispite" href="DODAJ"></b:navLink>
+                        </b:dropMenu>
+                        <b:navLink value="Unesi polaganje" href="homepage.xhtml" icon-awesome="fa-university"></b:navLink>
+                    </b:navbarLinks>   
+                </div>
+            </div>
+        </b:navBar>
+
+
+        <div align="left">
+            <h:form>
+                <f:metadata>
+                    <f:event type="preRenderView" listener="#{mbStudent.loadMesta()}"/>
+                </f:metadata>
+                <b:panel collapsible="false" title="Izmena studenta">
+                    <h:panelGrid columnClasses="alignmentLeft" >
+                        <h:outputLabel value="Broj indeksa: *" for="brojIndeksa"/>
+                        <b:inputText span="6" 
+                                     value="#{mbStudent.studentForEditing.brInd}" 
+                                     required="true"
+                                     disabled="true">
+                        </b:inputText>
+                        <h:message for="brojIndeksa" style="color: red"/>
+
+                        <h:outputLabel value="Ime: *" for="ime"/>
+                        <b:inputText span="6" 
+                                     value="#{mbStudent.studentForEditing.ime}" 
+                                     required="true" 
+                                     requiredMessage="Unesite ime"
+                                     validatorMessage="Min 1 max 30 karaktera">
+                            <f:validateLength minimum="2" maximum="30"/>
+                        </b:inputText>
+                        <h:message for="ime" style="color: red"/>
+
+                        <h:outputLabel value="Prezime: *" for="prezime"/>
+                        <b:inputText span="6" 
+                                     value="#{mbStudent.studentForEditing.prezime}" 
+                                     required="true" 
+                                     requiredMessage="Unesite prezime"
+                                     validatorMessage="Min 1 max 30 karaktera">
+                            <f:validateLength minimum="2" maximum="30"/>
+                        </b:inputText>
+                        <h:message for="prezime" style="color: red"/>
+
+                        <h:outputLabel value="Mesto: " styleClass="panel-body" for="mesto"/>
+                        <b:selectOneMenu value="#{mbStudent.studentForEditing.mesto}" colMd="2" required="true" labelColMd="2">
+                            <f:selectItems value="#{mbStudent.listMesto}" 
+                                           var="m"
+                                           itemLabel="#{m.naziv}"
+                                           itemValue="#{m}"/>
+                        </b:selectOneMenu>
+                        <h:message for="mesto" style="color: red"/>
+                    </h:panelGrid>
+                    <b:commandButton value="Izmeni" action="#{mbStudent.persistEditStudent()}" look="primary" />
+                    <span></span>
+                    <b:commandLink href="allstudents.xhtml" icon-awesome="fa-reply" value="Nazad" />
+                </b:panel>
+            </h:form>
+
+            <br></br>
+            <br></br>
+            <br></br>
+        </div>
+    </h:body>
+</html>

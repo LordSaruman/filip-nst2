@@ -5,7 +5,9 @@
  */
 package com.ff.filip.jpa.dbb;
 
+import com.ff.filip.domen.Mesto;
 import com.ff.filip.domen.Student;
+import com.ff.filip.jpa.controller.Controller;
 import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
@@ -43,23 +45,40 @@ public class StudentService implements Serializable {
         return list;
     }
 
+    public List<Mesto> findAllMesto() {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("nst_filip");
+        EntityManager em = emf.createEntityManager();
+
+        List<Mesto> list = em.createQuery("SELECT m FROM Mesto m").getResultList();
+        em.close();
+        emf.close();
+        return list;
+    }
+
     public void deleteStudentById(Student student) {
 
         Student target = student;
         try {
-            System.out.println(student.getBrInd());
-            System.out.println(student.getIme());
-            
             System.out.println("delete() entity not managed: " + student);
             utx.begin();
             target = em.merge(student);
             em.remove(target);
             utx.commit();
-            System.out.print("delete() this entity should now be deleted: " + (!em.contains(target)) );
+            System.out.print("delete() this entity should now be deleted: " + (!em.contains(target)));
         } catch (Exception e) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
             throw new RuntimeException(e);
         }
     }
 
+    public void persistStudent(Student student) {
+        try {
+            utx.begin();
+            em.persist(student);
+            utx.commit();
+        } catch (Exception e) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
+            throw new RuntimeException(e);
+        }
+    }
 }

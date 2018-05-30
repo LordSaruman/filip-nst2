@@ -5,3 +5,14 @@ body {
   padding: 40px 15px;
   text-align: center;
 }
+
+.alignmentLeft {
+ text-align : left;
+ background-color: #000\9;
+ width: 1250px;
+}
+.alignmentRight {
+ text-align : right;
+ border: 1px solid black;
+ background-color: lime;
+}
