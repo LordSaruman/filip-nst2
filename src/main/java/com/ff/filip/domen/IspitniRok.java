@@ -6,19 +6,15 @@
 package com.ff.filip.domen;
 
 import java.io.Serializable;
-import java.util.Collection;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -40,8 +36,8 @@ public class IspitniRok implements Serializable{
     private int sifraIspitnogRoka;
 
     @Column(name = "NazivIspitnogRoka", unique = true, nullable = false)
-    @NotNull(message = "Name of the exam week cannot be null")
-    @Size(min = 1, max = 20)
+    @NotNull(message = "Parametar naziv ispitnog roka ne moze biti prazan")
+    @Size(min = 1, max = 20, message = "Naziv ispitnog roka mora imati izmedju 1-20 karaktera")
     private String nazivIspitnogRoka;
 
     public IspitniRok() {

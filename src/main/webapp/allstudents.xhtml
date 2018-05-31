@@ -27,6 +27,7 @@
                             <b:navLink value="Prikazi sve ispite" href="allispit.xhtml"></b:navLink>
                         </b:dropMenu>
                         <b:navLink value="Unesi polaganje" href="addpolaganje.xhtml" icon-awesome="fa-university"></b:navLink>
+                        <b:navLink value="Logout" action="#{mbLogin.logout()}" href="index.xhtml" icon-awesome="fa-sign-out" ></b:navLink>
                     </b:navbarLinks>   
                 </div>
             </div>
@@ -38,6 +39,31 @@
             <br></br>
             <br></br>
             <br></br>
+
+            <h:form>
+                <b:growl id="growl3" 
+                         global-only="true" 
+                         show-detail="true" 
+                         severity="info" 
+                         allow-dismiss="true"
+                         animation-enter="animated bounceInDown"
+                         animation-exit="animated flipOutX"/>
+
+                <b:growl id="growl4" 
+                         global-only="true" 
+                         show-detail="true" 
+                         severity="warn" 
+                         allow-dismiss="true"
+                         animation-enter="animated bounceInDown"
+                         animation-exit="animated flipOutX"/>
+                <b:growl id="growl6" 
+                         global-only="true" 
+                         show-detail="true" 
+                         severity="error" 
+                         allow-dismiss="true"
+                         animation-enter="animated bounceInDown"
+                         animation-exit="animated flipOutX"/>
+            </h:form>
 
             <div class="panel-body">
                 <h:form id="j_idt237">
@@ -90,38 +116,34 @@
                                             </b:commandButton>
                                         </b:dataTableColumn>
                                         <b:dataTableColumn>
-                                            <a onclick="$('.modalPseudoClass').modal()"><i class="fa fa-remove"></i></a>
-                                            <!--<b:button look="danger" onclick="$('.modalPseudoClass').modal()" size="xs" icon-awesome="fa fa-remove" ></b:button>-->
                                             <b:commandButton look="primary" 
-                                                             action="#{mbStudent.setStudentForDeleting(student)}" 
-                                                             onclick="$('.modalPseudoClass').modal()" 
+                                                             action="#{mbStudent.deleteStudent()}"
                                                              size="xs" 
-                                                             icon-awesome="fa-remove">
+                                                             icon-awesome="fa-print"
+                                                             value="Odstampaj izvestaj">
                                             </b:commandButton>
+                                            <b:commandButton look="primary" 
+                                                             action="#{mbStudent.setStudentForDeleting(student)}"
+                                                             size="xs" 
+                                                             icon-awesome="fa-cogs"
+                                                             value="Postavi za brisanje">
+                                            </b:commandButton>
+                                            <span></span>
+                                            <b:commandButton look="danger" 
+                                                             action="#{mbStudent.deleteStudent()}"
+                                                             size="xs" 
+                                                             icon-awesome="fa-remove"
+                                                             value="Obrisi">
+                                            </b:commandButton>
+
                                         </b:dataTableColumn>
                                     </b:dataTable>
-
-                                    <h:form>
-                                        <b:modal id="modal-student" title="Upozorenje" styleClass="modalPseudoClass">
-                                            <p>Da li ste sigurni da zelite da obrisete studenta?</p>
-                                            <f:facet name="footer">
-                                                <b:button value="Zatvori" dismiss="modal" />
-                                                <h:commandButton value="Obrisi" actionListener="#{mbStudent.deleteStudent()}" onclick="$('.modalPseudoClass').modal()" class="btn btn-primary" ></h:commandButton>
-                                            </f:facet>
-                                        </b:modal>
-                                    </h:form>
                                 </h:form>
                             </div>
                         </div>
                     </div>
                 </h:form>
             </div>
-
-
-
-
-
-
             <br></br>
             <br></br>
             <br></br>

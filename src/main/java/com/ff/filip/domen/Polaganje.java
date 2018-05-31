@@ -9,7 +9,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -69,14 +68,14 @@ public class Polaganje implements Serializable{
     private Ispit ispit;
 
     @Column(name = "Ocena", unique = true, nullable = false)
-    @NotNull(message = "Mark cannot be empty")
+    @NotNull(message = "Parametar ocena ne moze biti prazan")
     @Max(10)
     @Min(1)
     private int ocena;
 
     @Column(name = "Datum", unique = true, nullable = false)
-    @NotNull(message = "Date cannot be empty")
-    @Past
+    @NotNull(message = "Parametar datum ne moze biti prazan")
+    @Past(message = "Ne moze se postavljati datum u buducnosti, moze samo u proslosti pa sve do sadasnjeg trenutka")
     @Temporal(TemporalType.DATE)
     private Date datum;
 

@@ -1,12 +1,136 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        <title>Facelet Title</title>
+        <title>Svi ispiti</title>
+
+        <link rel="shortcut icon" type="image/x-icon" href="#{resource['images/favicon.ico']}"/>
+        <h:outputStylesheet library="css" name="bootstrap.min.css"/>
+        <h:outputStylesheet library="css" name="bootstrap-theme.css" />
+
     </h:head>
     <h:body>
-        Hello from Facelets
+        <b:navBar class="navbar navbar-inverse navbar-fixed-top" fluid="true" brand="filip-nst2">
+            <div class="container">
+                <div class="navbar-header">
+                    <b:navbarLinks>
+                        <b:navLink value="Homepage" href="homepage.xhtml"></b:navLink>
+                        <b:dropMenu value="Student CRUD" icon-awesome="fa-graduation-cap">
+                            <b:navLink value="Dodaj novog studenta" href="addstudent.xhtml"></b:navLink>
+                            <b:navLink value="Prikazi sve studente" href="allstudents.xhtml"></b:navLink>
+                        </b:dropMenu>
+                        <b:dropMenu value="Ispit CRUD" icon-awesome="fa-stack-overflow">
+                            <b:navLink value="Dodaj novi ispit" href="addispit.xhtml"></b:navLink>
+                            <b:navLink value="Prikazi sve ispite" href="allispit.xhtml"></b:navLink>
+                        </b:dropMenu>
+                        <b:navLink value="Unesi polaganje" href="addpolaganje.xhtml" icon-awesome="fa-university"></b:navLink>
+                        <b:navLink value="Logout" action="#{mbLogin.logout()}" href="index.xhtml" icon-awesome="fa-sign-out" ></b:navLink>
+                    </b:navbarLinks>   
+                </div>
+            </div>
+        </b:navBar>
+
+
+        <div>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <h:form>
+                <b:growl id="growl1" 
+                         global-only="true" 
+                         show-detail="true" 
+                         severity="info" 
+                         allow-dismiss="true"
+                         animation-enter="animated bounceInDown"
+                         animation-exit="animated flipOutX"/>
+
+                <b:growl id="growl2" 
+                         global-only="true" 
+                         show-detail="true" 
+                         severity="warn" 
+                         allow-dismiss="true"
+                         animation-enter="animated bounceInDown"
+                         animation-exit="animated flipOutX"/>
+            </h:form>
+
+            <div class="panel-body">
+                <h:form id="j_idt237">
+                    <div id="qwerty1" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="dataTables_length" id="qwerty2">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h:form>
+                                    <f:metadata>
+                                        <f:event type="preRenderView" listener="#{mbIspit.findAllIspit()}"/>
+                                    </f:metadata>
+                                    <b:dataTable value="#{mbIspit.listIspit}"
+                                                 var="ispit"
+                                                 class="table table-bordered table-striped table-hover dataTable no-footer" 
+                                                 border="true" 
+                                                 searching="true">
+                                        <f:facet name="header">
+                                            <tr role = "row">
+                                                <th colspan="1" rowspan="2" class="sorting" style="width: 250px;">Ispit - sifra ispita</th>
+                                                <th colspan="1" rowspan="1">Osnovne info o ispitu</th>
+                                                <th colspan="2" rowspan="1">Dodatne akcije</th>
+                                            </tr>
+                                            <tr role="row">
+                                                <th class="sorting" tabindex="0" rowspan="1" colspan="1" style="width: 125px;">Naziv ispita</th>
+                                                <th tabindex="0" rowspan="1" colspan="1" style="width: 25px;">Izmena ispita</th>
+                                                <th tabindex="0" rowspan="1" colspan="1" style="width: 25px;">Brisanje ispita</th>
+                                            </tr>
+                                        </f:facet>
+                                        <b:dataTableColumn value="#{ispit.sifraIspita}" data-order="#{mbIspit.ispit.sifraIspita}"/>
+                                        <b:dataTableColumn value="#{ispit.nazivIspita}" />
+                                        <b:dataTableColumn>
+                                            <b:commandButton look="primary" 
+                                                             action="editispit.xhtml"
+                                                             size="xs" 
+                                                             icon-awesome="fa-edit">
+                                                <f:setPropertyActionListener target="#{mbIspit.ispitForEditing}" 
+                                                                             value="#{ispit}"/>
+                                            </b:commandButton>
+                                        </b:dataTableColumn>
+                                        <b:dataTableColumn>
+                                            <b:commandButton look="primary" 
+                                                             action="#{mbIspit.setIspitForDeleting(ispit)}"
+                                                             size="xs" 
+                                                             icon-awesome="fa-cogs"
+                                                             value="Postavi za brisanje">
+                                            </b:commandButton>
+                                            <span></span>
+                                            <b:commandButton look="danger" 
+                                                             action="#{mbIspit.deleteIspit()}"
+                                                             size="xs" 
+                                                             icon-awesome="fa-remove"
+                                                             value="Obrisi">
+                                            </b:commandButton>
+                                        </b:dataTableColumn>
+                                    </b:dataTable>
+                                </h:form>
+                            </div>
+                        </div>
+                    </div>
+                </h:form>
+            </div>
+
+
+
+
+
+
+            <br></br>
+            <br></br>
+            <br></br>
+        </div>
     </h:body>
 </html>
-

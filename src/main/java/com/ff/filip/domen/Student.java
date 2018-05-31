@@ -41,11 +41,11 @@ public class Student implements Serializable{
     private String brInd;
 
     @Column(name = "Ime", unique = true, nullable = false)
-    @Size(min = 1, max = 30)
+    @Size(min = 1, max = 30, message = "Ime mora imati izmedju 1-30 karaktera")
     private String ime;
 
     @Column(name = "Prezime", unique = true, nullable = false)
-    @Size(min = 1, max = 30)
+    @Size(min = 1, max = 30, message = "Prezime mora imati izmedju 1-20 karaktera")
     private String prezime;
 
     @Valid

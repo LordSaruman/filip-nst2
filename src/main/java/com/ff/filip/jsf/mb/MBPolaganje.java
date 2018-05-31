@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -124,5 +126,7 @@ public class MBPolaganje implements Serializable {
 
     public void persistPolaganje() {
         polaganjeService.persistPolaganje(polaganje);
+        polaganje = new Polaganje();
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "INFO: ", "  Polaganje je uspesno sacuvano."));
     }
 }

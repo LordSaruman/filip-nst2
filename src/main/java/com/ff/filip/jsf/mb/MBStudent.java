@@ -11,6 +11,8 @@ import com.ff.filip.jpa.dbb.StudentService;
 import java.io.Serializable;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -59,6 +61,7 @@ public class MBStudent implements Serializable {
 
     public void setStudentForDeleting(Student studentForDeleting) {
         this.studentForDeleting = studentForDeleting;
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Upozorenje! ", "  Student je postavljen za brisanje."));
     }
 
     public List<Student> getList() {
@@ -87,19 +90,36 @@ public class MBStudent implements Serializable {
 
     public void deleteStudent() {
         ss.deleteStudentById(studentForDeleting);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "INFO: ", "  Student je uspesno obrisan."));
     }
 
     public void persistStudent() {
-        ss.persistStudent(student);
-        student = new Student();
+        boolean flag = checkBrInd(student);
+
+        if (flag == true) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Upozorenje: ", "  Student nije sacuvan!"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Greska: ", "  Broj indeksa vec postoji u bazi. Molimo izaberite drugi broj indeksa."));
+        } else {
+            ss.persistStudent(student);
+            student = new Student();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "INFO: ", "  Student je uspesno sacuvan."));
+        }
     }
 
     public void persistEditStudent() {
         ss.persistEdit(studentForEditing);
         studentForEditing = new Student();
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "INFO: ", "  Student je uspesno izmenjen i sacuvan."));
     }
 
     public void loadMesta() {
         findAllMesto();
+    }
+
+    private boolean checkBrInd(Student student) {
+        boolean flag = false; //br indeksa ne postoji u bazi
+        flag = ss.checkBrInd(student);
+        
+        return flag;
     }
 }

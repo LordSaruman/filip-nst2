@@ -44,28 +44,26 @@ public class MBLoginToTheSystem implements Serializable {
     }
 
     public String loginTheUser() {
-        System.out.println("USAO U METODU - Login");
         if (loginuser.getUsername() == null || loginuser.getPassword() == null || loginuser.getUsername().isEmpty() || loginuser.getPassword().isEmpty()) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Niste popunili username ili password", null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Greska! ", "  Greska prilikom logovanja, niste popunili sva polja."));
             return "";
         }
 
         try {
-            System.out.println("Korinik: korisnicko ime:" + loginuser.getUsername() + ", kosrisnicka sifra:" + loginuser.getPassword());
             loginuser = us.logInUser(loginuser);
-//            loginuser = dbb.logInUser(loginuser);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Korisnik je uspesno prijavljen", null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "INFO: ", "  Korisnik je uspesno prijavljen!"));
             return "homepage.xhtml";
         } catch (Exception ex) {
             Logger.getLogger(MBLoginToTheSystem.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println(ex.getMessage());
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Sistem ne moze da pronadje korisnika na osnovu zadatih vrednosti", null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Greska: ", "  Sistem ne moze da pronadje korisnika na osnovu zadatih vrednosti"));
         }
 
         return null;
     }
 
     public String logout() {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "INFO: ", "  Uspesno ste se odjavili"));
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         return "/index.xhtml?faces-redirect=true";
     }

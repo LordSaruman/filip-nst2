@@ -18,6 +18,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -33,9 +34,19 @@ public class StudentService implements Serializable {
     @Resource
     private javax.transaction.UserTransaction utx;
 
+    public Student findStudentById(String id) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("nst_filip");
+        EntityManager em = emf.createEntityManager();
+
+        Student student = em.find(Student.class, (String)id);
+        em.close();
+        emf.close();
+        return student;
+    }
+
     public List<Student> findAllStudent() {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("nst_filip");
-        em = emf.createEntityManager();
+        EntityManager em = emf.createEntityManager();
 
         List<Student> list = em.createQuery("SELECT s FROM Student s").getResultList();
         em.close();
@@ -97,5 +108,16 @@ public class StudentService implements Serializable {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
             throw new RuntimeException(e);
         }
+    }
+
+    public boolean checkBrInd(Student student) {
+        boolean flag = true; //postoji
+        Student s = null;
+        s = findStudentById(student.getBrInd());
+        if (s == null) {
+            return false;
+        }
+        
+        return flag;
     }
 }

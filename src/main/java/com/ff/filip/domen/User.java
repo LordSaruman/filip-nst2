@@ -36,13 +36,13 @@ public class User implements Serializable{
     private int UserId;
 
     @Column(name = "Username", unique = true, nullable = false)
-    @Size(min = 1, max = 20)
-    @NotNull(message = "Username cannot be null")
+    @Size(min = 1, max = 20, message = "Username mora imati izmedju 1-20 karaktera")
+    @NotNull(message = "Username ne moze biti prazan")
     private String username;
 
     @Column(name = "Password", unique = true, nullable = false)
-    @NotNull(message = "Password cannot be null")
-    @Size(min = 1, max = 20)
+    @NotNull(message = "Password ne moze biti prazan")
+    @Size(min = 1, max = 20, message = "Username mora imati izmedju 1-20 karaktera")
     private String password;
 
     public User() {

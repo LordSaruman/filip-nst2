@@ -1,12 +1,98 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
     <h:head>
-        <title>Facelet Title</title>
+        <title>Dodaj ispit</title>
+
+        <link rel="shortcut icon" type="image/x-icon" href="#{resource['images/favicon.ico']}"/>
+        <h:outputStylesheet library="css" name="bootstrap.min.css"/>
+        <h:outputStylesheet library="css" name="bootstrap-theme.css" />
+        <h:outputStylesheet library="css" name="start.css" />
+
     </h:head>
     <h:body>
-        Hello from Facelets
+        <b:navBar class="navbar navbar-inverse navbar-fixed-top" fluid="true" brand="filip-nst2">
+            <div class="container">
+                <div class="navbar-header">
+                    <b:navbarLinks>
+                        <b:navLink value="Homepage" href="homepage.xhtml"></b:navLink>
+                        <b:dropMenu value="Student CRUD" icon-awesome="fa-graduation-cap">
+                            <b:navLink value="Dodaj novog studenta" href="addstudent.xhtml"></b:navLink>
+                            <b:navLink value="Prikazi sve studente" href="allstudents.xhtml"></b:navLink>
+                        </b:dropMenu>
+                        <b:dropMenu value="Ispit CRUD" icon-awesome="fa-stack-overflow">
+                            <b:navLink value="Dodaj novi ispit" href="addispit.xhtml"></b:navLink>
+                            <b:navLink value="Prikazi sve ispite" href="allispit.xhtml"></b:navLink>
+                        </b:dropMenu>
+                        <b:navLink value="Unesi polaganje" href="addpolaganje.xhtml" icon-awesome="fa-university"></b:navLink>
+                        <b:navLink value="Logout" action="#{mbLogin.logout()}" href="index.xhtml" icon-awesome="fa-sign-out" ></b:navLink>
+                    </b:navbarLinks>   
+                </div>
+            </div>
+        </b:navBar>
+
+        <div align="left">
+            <h:form>
+                <b:panel collapsible="false" title="Unos novog ispita">
+                    <h:panelGrid columnClasses="alignmentLeft" >
+
+                        <h:outputLabel value="Sifra ispita: *" for="sifraIspita"/>
+                        <b:inputText span="6" 
+                                     value="#{mbIspit.ispit.sifraIspita}" 
+                                     required="true" 
+                                     requiredMessage="Unesite sifru ispita"
+                                     validatorMessage="Min 1 max 10 karaktera">
+                            <f:validateLength minimum="1" maximum="10"/>
+                        </b:inputText>
+                        <h:message for="sifraIspita" style="color: red"/>
+
+                        <h:outputLabel value="Naziv ispita: *" for="nazivIspita"/>
+                        <b:inputText span="6" 
+                                     value="#{mbIspit.ispit.nazivIspita}" 
+                                     required="true" 
+                                     requiredMessage="Unesite naziv ispita"
+                                     validatorMessage="Min 1 max 30 karaktera">
+                            <f:validateLength minimum="1" maximum="30"/>
+                        </b:inputText>
+                        <h:message for="nazivIspita" style="color: red"/>
+                    </h:panelGrid>
+                    <b:commandButton value="Sacuvaj" action="#{mbIspit.persistIspit()}" look="primary" />
+
+                </b:panel>
+            </h:form>
+
+            <br></br>
+            <br></br>
+            <br></br>
+
+            <h:form>
+                <b:growl id="growl5" 
+                         global-only="true" 
+                         show-detail="true" 
+                         severity="info" 
+                         allow-dismiss="true"
+                         animation-enter="animated bounceInDown"
+                         animation-exit="animated flipOutX"/>
+                <b:growl id="growl2" 
+                         global-only="true" 
+                         show-detail="true" 
+                         severity="warn" 
+                         allow-dismiss="true"
+                         animation-enter="animated bounceInDown"
+                         animation-exit="animated flipOutX"/>
+                <b:growl id="growl6" 
+                         global-only="true" 
+                         show-detail="true" 
+                         severity="error" 
+                         allow-dismiss="true"
+                         animation-enter="animated bounceInDown"
+                         animation-exit="animated flipOutX"/>
+            </h:form>
+        </div>
     </h:body>
 </html>
-

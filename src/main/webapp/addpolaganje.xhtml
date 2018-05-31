@@ -30,6 +30,7 @@
                             <b:navLink value="Prikazi sve ispite" href="DODAJ"></b:navLink>
                         </b:dropMenu>
                         <b:navLink value="Unesi polaganje" href="addpolaganje.xhtml" icon-awesome="fa-university"></b:navLink>
+                        <b:navLink value="Logout" action="#{mbLogin.logout()}" href="index.xhtml" icon-awesome="fa-sign-out" ></b:navLink>
                     </b:navbarLinks>   
                 </div>
             </div>
@@ -101,6 +102,18 @@
             <br></br>
             <br></br>
             <br></br>
+
+
+            <h:form>
+                <b:growl id="growl5" 
+                         global-only="true" 
+                         show-detail="true" 
+                         severity="info" 
+                         allow-dismiss="true"
+                         animation-enter="animated bounceInDown"
+                         animation-exit="animated flipOutX"/>
+
+            </h:form>
         </div>
     </h:body>
 </html>

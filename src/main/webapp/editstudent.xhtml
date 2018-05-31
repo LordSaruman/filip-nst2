@@ -30,6 +30,7 @@
                             <b:navLink value="Prikazi sve ispite" href="allispit.xhtml"></b:navLink>
                         </b:dropMenu>
                         <b:navLink value="Unesi polaganje" href="addpolaganje.xhtml" icon-awesome="fa-university"></b:navLink>
+                        <b:navLink value="Logout" action="#{mbLogin.logout()}" href="index.xhtml" icon-awesome="fa-sign-out" ></b:navLink>
                     </b:navbarLinks>   
                 </div>
             </div>
@@ -57,7 +58,7 @@
                                      required="true" 
                                      requiredMessage="Unesite ime"
                                      validatorMessage="Min 1 max 30 karaktera">
-                            <f:validateLength minimum="2" maximum="30"/>
+                            <f:validateLength minimum="1" maximum="30"/>
                         </b:inputText>
                         <h:message for="ime" style="color: red"/>
 
@@ -67,7 +68,7 @@
                                      required="true" 
                                      requiredMessage="Unesite prezime"
                                      validatorMessage="Min 1 max 30 karaktera">
-                            <f:validateLength minimum="2" maximum="30"/>
+                            <f:validateLength minimum="1" maximum="30"/>
                         </b:inputText>
                         <h:message for="prezime" style="color: red"/>
 
@@ -89,6 +90,16 @@
             <br></br>
             <br></br>
             <br></br>
+
+            <h:form>
+                <b:growl id="growl6" 
+                         global-only="true" 
+                         show-detail="true" 
+                         severity="info" 
+                         allow-dismiss="true"
+                         animation-enter="animated bounceInDown"
+                         animation-exit="animated flipOutX"/>
+            </h:form>
         </div>
     </h:body>
 </html>

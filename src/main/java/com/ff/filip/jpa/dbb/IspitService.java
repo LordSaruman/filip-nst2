@@ -35,7 +35,7 @@ public class IspitService implements Serializable {
 
     public List<Ispit> findAllIspit() {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("nst_filip");
-        em = emf.createEntityManager();
+        EntityManager em = emf.createEntityManager();
 
         List<Ispit> list = em.createQuery("SELECT i FROM Ispit i").getResultList();
         em.close();
@@ -72,7 +72,7 @@ public class IspitService implements Serializable {
         } catch (Exception e) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
             throw new RuntimeException(e);
-        }
+        } 
     }
 
     public void deleteIspitById(Ispit ispit) {
@@ -93,7 +93,6 @@ public class IspitService implements Serializable {
     public void persistEdit(Ispit ispitForEditing) {
         try {
             utx.begin();
-
             em.createQuery("UPDATE Ispit i "
                     + "SET i.nazivIspita =?1 "
                     + "WHERE i.sifraIspita =?2")
@@ -106,6 +105,17 @@ public class IspitService implements Serializable {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
             throw new RuntimeException(e);
         }
+    }
+
+    public boolean checkIspitPass(Ispit ispit) {
+        boolean flag = true; //postoji
+        Ispit i = null;
+        i = findIspitById(ispit.getSifraIspita());
+        if (i == null) {
+            return false;
+        }
+        
+        return flag;
     }
 
 }

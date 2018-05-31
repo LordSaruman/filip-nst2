@@ -21,7 +21,6 @@
 
                 <h:outputStylesheet library="css" name="login.css" />
 
-                <h:messages showDetail="true" errorClass="login-error"  />
                 <div class="login-container" >
                     <h:panelGrid columns="2" headerClass="login-header" >
                         <f:facet name="header">PRIJAVA NA SISTEM</f:facet>
@@ -35,6 +34,38 @@
                 </div>
             </h:form> 
         </b:container>
+
+        <h:form>
+            <b:growl id="growl3" 
+                     global-only="true" 
+                     show-detail="true" 
+                     severity="info" 
+                     allow-dismiss="true"
+                     animation-enter="animated bounceInDown"
+                     animation-exit="animated flipOutX"/>
+
+            <b:growl id="growl4" 
+                     global-only="true" 
+                     show-detail="true" 
+                     severity="warn" 
+                     allow-dismiss="true"
+                     animation-enter="animated bounceInDown"
+                     animation-exit="animated flipOutX"/>
+            <b:growl id="growl6" 
+                     global-only="true" 
+                     show-detail="true" 
+                     severity="error" 
+                     allow-dismiss="true"
+                     animation-enter="animated bounceInDown"
+                     animation-exit="animated flipOutX"/>
+            <b:growl id="growl7" 
+                     global-only="true" 
+                     show-detail="true" 
+                     severity="fatal" 
+                     allow-dismiss="true"
+                     animation-enter="animated bounceInDown"
+                     animation-exit="animated flipOutX"/>
+        </h:form>
     </h:body>
 </html>
 
