@@ -26,10 +26,10 @@
                             <b:navLink value="Prikazi sve studente" href="allstudents.xhtml"></b:navLink>
                         </b:dropMenu>
                         <b:dropMenu value="Ispit CRUD" icon-awesome="fa-stack-overflow">
-                            <b:navLink value="Dodaj novi ispit" href="DODAJ"></b:navLink>
-                            <b:navLink value="Prikazi sve ispite" href="DODAJ"></b:navLink>
+                            <b:navLink value="Dodaj novi ispit" href="addispit.xhtml"></b:navLink>
+                            <b:navLink value="Prikazi sve ispite" href="allispit.xhtml"></b:navLink>
                         </b:dropMenu>
-                        <b:navLink value="Unesi polaganje" href="homepage.xhtml" icon-awesome="fa-university"></b:navLink>
+                        <b:navLink value="Unesi polaganje" href="addpolaganje.xhtml" icon-awesome="fa-university"></b:navLink>
                     </b:navbarLinks>   
                 </div>
             </div>
@@ -42,7 +42,6 @@
                     <f:event type="preRenderView" listener="#{mbStudent.loadMesta()}"/>
                 </f:metadata>
                 <b:panel collapsible="false" title="Unos novog studenta">
-                    <!--                    <b:panelGrid colSpans="2,10" columns="5" columnClasses="alignmentLeft">-->
                     <h:panelGrid columnClasses="alignmentLeft" >
                         <h:outputLabel value="Broj indeksa: *" for="brojIndeksa"/>
                         <b:inputText span="6" 
@@ -50,7 +49,7 @@
                                      required="true" 
                                      requiredMessage="Unesite broj indeksa"
                                      validatorMessage="Broj indeksa nije u odgovarajucem formatu">
-                            <f:validateRegex pattern="[1-9][0-9]*[/][0-9][0-9]"/>
+                            <f:validateRegex pattern="[1-9][0-9][0-9][0-9][/][0-9][0-9][0-9][0-9]"/>
                         </b:inputText>
                         <h:message for="brojIndeksa" style="color: red"/>
 
@@ -60,7 +59,7 @@
                                      required="true" 
                                      requiredMessage="Unesite ime"
                                      validatorMessage="Min 1 max 30 karaktera">
-                            <f:validateLength minimum="2" maximum="30"/>
+                            <f:validateLength minimum="1" maximum="30"/>
                         </b:inputText>
                         <h:message for="ime" style="color: red"/>
 
@@ -70,7 +69,7 @@
                                      required="true" 
                                      requiredMessage="Unesite prezime"
                                      validatorMessage="Min 1 max 30 karaktera">
-                            <f:validateLength minimum="2" maximum="30"/>
+                            <f:validateLength minimum="1" maximum="30"/>
                         </b:inputText>
                         <h:message for="prezime" style="color: red"/>
 
@@ -83,7 +82,6 @@
                         </b:selectOneMenu>
                         <h:message for="mesto" style="color: red"/>
                     </h:panelGrid>
-                    <!--</b:panelGrid>-->
                     <b:commandButton value="Sacuvaj" action="#{mbStudent.persistStudent()}" look="primary" />
 
                 </b:panel>

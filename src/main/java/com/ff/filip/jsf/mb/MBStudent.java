@@ -95,8 +95,7 @@ public class MBStudent implements Serializable {
     }
 
     public void persistEditStudent() {
-        ss.deleteStudentById(studentForEditing);
-        ss.persistStudent(studentForEditing);
+        ss.persistEdit(studentForEditing);
         studentForEditing = new Student();
     }
 

@@ -5,8 +5,7 @@
  */
 package com.ff.filip.jpa.dbb;
 
-import com.ff.filip.domen.Mesto;
-import com.ff.filip.domen.Student;
+import com.ff.filip.domen.Polaganje;
 import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
@@ -25,7 +24,7 @@ import javax.persistence.PersistenceContext;
  */
 @Named
 @RequestScoped
-public class StudentService implements Serializable {
+public class PolaganjeService implements Serializable {
 
     @PersistenceContext(unitName = "nst_filip")
     private EntityManager em;
@@ -33,66 +32,66 @@ public class StudentService implements Serializable {
     @Resource
     private javax.transaction.UserTransaction utx;
 
-    public List<Student> findAllStudent() {
+    public List<Polaganje> findAllPolaganje() {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("nst_filip");
         em = emf.createEntityManager();
 
-        List<Student> list = em.createQuery("SELECT s FROM Student s").getResultList();
+        List<Polaganje> list = em.createQuery("SELECT p FROM Polaganje p").getResultList();
         em.close();
         emf.close();
         return list;
     }
 
-    public List<Mesto> findAllMesto() {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("nst_filip");
-        em = emf.createEntityManager();
+    public void persistAllPolaganja(List<Polaganje> list) {
 
-        List<Mesto> list = em.createQuery("SELECT m FROM Mesto m").getResultList();
-        em.close();
-        emf.close();
-        return list;
-    }
-
-    public void deleteStudentById(Student student) {
-        Student target = student;
         try {
-            System.out.println("delete() entity not managed: " + student);
             utx.begin();
-            target = em.merge(student);
+
+            for (Polaganje polaganje : list) {
+                Polaganje p = new Polaganje();
+                p.setDatum(polaganje.getDatum());
+                p.setIspit(polaganje.getIspit());
+                p.setIspitniRok(polaganje.getIspitniRok());
+                p.setOcena(polaganje.getOcena());
+                p.setStudent(polaganje.getStudent());
+
+                em.persist(p);
+            }
+            utx.commit();
+        } catch (Exception e) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void persistPolaganje(Polaganje polaganje) {
+        try {
+            utx.begin();
+
+            Polaganje p = new Polaganje();
+            p.setDatum(polaganje.getDatum());
+            p.setIspit(polaganje.getIspit());
+            p.setIspitniRok(polaganje.getIspitniRok());
+            p.setOcena(polaganje.getOcena());
+            p.setStudent(polaganje.getStudent());
+
+            em.persist(p);
+            utx.commit();
+        } catch (Exception e) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void deletePolaganjeById(Polaganje polaganje) {
+        Polaganje target = polaganje;
+        try {
+            System.out.println("delete() entity not managed: " + polaganje);
+            utx.begin();
+            target = em.merge(polaganje);
             em.remove(target);
             utx.commit();
             System.out.print("delete() this entity should now be deleted: " + (!em.contains(target)));
-        } catch (Exception e) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void persistStudent(Student student) {
-        try {
-            utx.begin();
-            em.persist(student);
-            utx.commit();
-        } catch (Exception e) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void persistEdit(Student studentForEditing) {
-        try {
-            utx.begin();
-
-            em.createQuery("UPDATE Student s "
-                    + "SET s.ime =?1, s.prezime =?2, s.mesto =?3 "
-                    + "WHERE s.brInd =?4")
-                    .setParameter(1, studentForEditing.getIme())
-                    .setParameter(2, studentForEditing.getPrezime())
-                    .setParameter(3, studentForEditing.getMesto())
-                    .setParameter(4, studentForEditing.getBrInd())
-                    .executeUpdate();
-
-            utx.commit();
         } catch (Exception e) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
             throw new RuntimeException(e);

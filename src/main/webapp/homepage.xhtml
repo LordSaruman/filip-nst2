@@ -17,28 +17,21 @@
         <b:navBar class="navbar navbar-inverse navbar-fixed-top" fluid="true" brand="filip-nst2">
             <div class="container">
                 <div class="navbar-header">
-                    <b:navbarLinks>
-                        <b:navLink value="Homepage" href="homepage.xhtml"></b:navLink>
-                        <b:dropMenu value="Student CRUD" icon-awesome="fa-graduation-cap">
-                            <b:navLink value="Dodaj novog studenta" href="addstudent.xhtml"></b:navLink>
-                            <b:navLink value="Prikazi sve studente" href="allstudents.xhtml"></b:navLink>
-                        </b:dropMenu>
-                        <b:dropMenu value="Ispit CRUD" icon-awesome="fa-stack-overflow">
-                            <b:navLink value="Dodaj novi ispit" href="DODAJ"></b:navLink>
-                            <b:navLink value="Prikazi sve ispite" href="DODAJ"></b:navLink>
-                        </b:dropMenu>
-                        <b:navLink value="Unesi polaganje" href="homepage.xhtml" icon-awesome="fa-university"></b:navLink>
-                        <!--                        <h:form>
-                                                    <b:navCommandLink icon-awesome="power-off" value="Logout"
-                                                                      style="margin-right: 50px;"><f:ajax execute="@this"/>
-                                                    </b:navCommandLink>
-                                                </h:form>-->
-                    </b:navbarLinks>   
-                    <!--                    <h:form>
-                                            <b:commandButton class="btn btn-danger center_content" value="Izloguj se" icon-awesome="fa-sign-out" icon-align="right" onclick="#{mbLogin.logout()}"></b:commandButton>
-                                            <b:button class="btn btn-danger center_content" value="Izloguj se" icon-awesome="fa-sign-out" icon-align="right" onclick="#{mbLogin.logout()}"></b:button>
-                                        </h:form>-->
-<!--                    <a href="#{mbLogin.logout()}" class="btn btn-danger">Logout</a>-->
+                    <h:form>
+                        <b:navbarLinks>
+                            <b:navLink value="Homepage" href="homepage.xhtml"></b:navLink>
+                            <b:dropMenu value="Student CRUD" icon-awesome="fa-graduation-cap">
+                                <b:navLink value="Dodaj novog studenta" href="addstudent.xhtml"></b:navLink>
+                                <b:navLink value="Prikazi sve studente" href="allstudents.xhtml"></b:navLink>
+                            </b:dropMenu>
+                            <b:dropMenu value="Ispit CRUD" icon-awesome="fa-stack-overflow">
+                                <b:navLink value="Dodaj novi ispit" href="addispit.xhtml"></b:navLink>
+                                <b:navLink value="Prikazi sve ispite" href="allispit.xhtml"></b:navLink>
+                            </b:dropMenu>
+                            <b:navLink value="Unesi polaganje" href="addpolaganje.xhtml" icon-awesome="fa-university"></b:navLink>
+                            <b:navLink value="Logout" action="#{mbLogin.logout()}" href="index.xhtml" icon-awesome="fa-sign-out" ></b:navLink>
+                        </b:navbarLinks>   
+                    </h:form>
                 </div>
             </div>
         </b:navBar>

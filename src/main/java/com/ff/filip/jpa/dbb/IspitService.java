@@ -5,8 +5,7 @@
  */
 package com.ff.filip.jpa.dbb;
 
-import com.ff.filip.domen.Mesto;
-import com.ff.filip.domen.Student;
+import com.ff.filip.domen.Ispit;
 import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
@@ -18,6 +17,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -25,7 +25,7 @@ import javax.persistence.PersistenceContext;
  */
 @Named
 @RequestScoped
-public class StudentService implements Serializable {
+public class IspitService implements Serializable {
 
     @PersistenceContext(unitName = "nst_filip")
     private EntityManager em;
@@ -33,32 +33,54 @@ public class StudentService implements Serializable {
     @Resource
     private javax.transaction.UserTransaction utx;
 
-    public List<Student> findAllStudent() {
+    public List<Ispit> findAllIspit() {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("nst_filip");
         em = emf.createEntityManager();
 
-        List<Student> list = em.createQuery("SELECT s FROM Student s").getResultList();
+        List<Ispit> list = em.createQuery("SELECT i FROM Ispit i").getResultList();
         em.close();
         emf.close();
         return list;
     }
 
-    public List<Mesto> findAllMesto() {
+    public Ispit findIspitById(int i) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("nst_filip");
         em = emf.createEntityManager();
 
-        List<Mesto> list = em.createQuery("SELECT m FROM Mesto m").getResultList();
+        Ispit ispit = em.find(Ispit.class, (int) i);
         em.close();
         emf.close();
-        return list;
+        return ispit;
     }
 
-    public void deleteStudentById(Student student) {
-        Student target = student;
+    public Ispit findIspitByName(String name) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("nst_filip");
+        em = emf.createEntityManager();
+
+        TypedQuery<Ispit> query = em.createNamedQuery("Ispit.findByNazivIspita", Ispit.class).setParameter("nazivIspita", name);
+        Ispit ispit = query.getSingleResult();
+        em.close();
+        emf.close();
+        return ispit;
+    }
+
+    public void persistIspit(Ispit ispit) {
         try {
-            System.out.println("delete() entity not managed: " + student);
             utx.begin();
-            target = em.merge(student);
+            em.persist(ispit);
+            utx.commit();
+        } catch (Exception e) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void deleteIspitById(Ispit ispit) {
+        Ispit target = ispit;
+        try {
+            System.out.println("delete() entity not managed: " + ispit);
+            utx.begin();
+            target = em.merge(ispit);
             em.remove(target);
             utx.commit();
             System.out.print("delete() this entity should now be deleted: " + (!em.contains(target)));
@@ -68,28 +90,15 @@ public class StudentService implements Serializable {
         }
     }
 
-    public void persistStudent(Student student) {
-        try {
-            utx.begin();
-            em.persist(student);
-            utx.commit();
-        } catch (Exception e) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void persistEdit(Student studentForEditing) {
+    public void persistEdit(Ispit ispitForEditing) {
         try {
             utx.begin();
 
-            em.createQuery("UPDATE Student s "
-                    + "SET s.ime =?1, s.prezime =?2, s.mesto =?3 "
-                    + "WHERE s.brInd =?4")
-                    .setParameter(1, studentForEditing.getIme())
-                    .setParameter(2, studentForEditing.getPrezime())
-                    .setParameter(3, studentForEditing.getMesto())
-                    .setParameter(4, studentForEditing.getBrInd())
+            em.createQuery("UPDATE Ispit i "
+                    + "SET i.nazivIspita =?1 "
+                    + "WHERE i.sifraIspita =?2")
+                    .setParameter(1, ispitForEditing.getNazivIspita())
+                    .setParameter(2, ispitForEditing.getSifraIspita())
                     .executeUpdate();
 
             utx.commit();
@@ -98,4 +107,5 @@ public class StudentService implements Serializable {
             throw new RuntimeException(e);
         }
     }
+
 }

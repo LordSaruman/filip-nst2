@@ -25,11 +25,11 @@
                 <div class="login-container" >
                     <h:panelGrid columns="2" headerClass="login-header" >
                         <f:facet name="header">PRIJAVA NA SISTEM</f:facet>
-                        <h:outputLabel id="lblUser" value="username:" />
-                        <h:inputText id="username" value="#{mbLogin.loginuser.username}" />
+                        <h:outputLabel id="lblUser" value="username:"/>
+                        <h:inputText id="username" value="#{mbLogin.loginuser.username}"/>
 
-                        <h:outputLabel id="lblPass" value="password:" />
-                        <h:inputSecret id="password" value="#{mbLogin.loginuser.password}" />
+                        <h:outputLabel id="lblPass" value="password:"/>
+                        <h:inputSecret id="password" value="#{mbLogin.loginuser.password}"/> 
                     </h:panelGrid>
                     <h:commandButton value="Prijavi se" action="#{mbLogin.loginTheUser()}"  ></h:commandButton>
                 </div>
