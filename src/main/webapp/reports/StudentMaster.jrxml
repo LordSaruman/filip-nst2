@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="efd34a95-b269-42c2-bcf5-bf20fdb59a00">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/home/filip/NetBeansProjects/filip-nst2/src/main/webapp/reports/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="listPolaganja" class="java.util.Collection" isForPrompting="false"/>
+	<field name="student.brInd" class="java.lang.String"/>
+	<field name="student.ime" class="java.lang.String"/>
+	<field name="student.prezime" class="java.lang.String"/>
+	<field name="idPolaganje" class="java.lang.Integer"/>
+	<field name="ispit" class="java.lang.Object"/>
+	<field name="ispitniRok" class="java.lang.Object"/>
+	<field name="ocena" class="java.lang.Integer"/>
+	<field name="datum" class="java.util.Date"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="23" width="555" height="39" uuid="0ffdd307-c5ce-4638-b972-8f47172f174e"/>
+				<textElement textAlignment="Center">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[         IZVEŠTAJ - Polaganje ispita u ispitnom roku pojedinačno za svakog studenta]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="111" splitType="Stretch">
+			<staticText>
+				<reportElement x="10" y="41" width="100" height="20" uuid="14364ada-d95f-4cd2-a73d-ca6014e98120"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ime:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="75" width="100" height="20" uuid="9cc329c6-93d3-425d-b312-c72a63daa8c6"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Prezime: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="10" width="100" height="20" uuid="afc36446-dbf9-4676-8599-816a46e173c2"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Broj indeksa:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="110" y="10" width="124" height="20" uuid="91b17916-dba1-400a-b775-6e711fc33a77"/>
+				<textFieldExpression><![CDATA[$F{student.brInd}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="110" y="41" width="124" height="20" uuid="877c59b3-0119-48cd-9ec4-50cf36e10b1c"/>
+				<textFieldExpression><![CDATA[$F{student.ime}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="110" y="75" width="124" height="20" uuid="da1ea5c4-eb54-42f8-96b1-70ff77bdc1a6"/>
+				<textFieldExpression><![CDATA[$F{student.prezime}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<subreport>
+				<reportElement x="110" y="25" width="445" height="100" uuid="c96da36e-7a7d-4d5a-b4aa-ff7d25454ad8"/>
+				<subreportParameter name="listPolaganja">
+					<subreportParameterExpression><![CDATA[$P{listPolaganja}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[$P{listPolaganja}]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "StudentMaster_subreport.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

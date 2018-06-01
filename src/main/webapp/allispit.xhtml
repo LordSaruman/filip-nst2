@@ -102,6 +102,12 @@
                                         </b:dataTableColumn>
                                         <b:dataTableColumn>
                                             <b:commandButton look="primary" 
+                                                             action="#{mbJasper.printPDFIspit()}"
+                                                             size="xs" 
+                                                             icon-awesome="fa-print"
+                                                             value="Odstampaj izvestaj">
+                                            </b:commandButton>
+                                            <b:commandButton look="primary" 
                                                              action="#{mbIspit.setIspitForDeleting(ispit)}"
                                                              size="xs" 
                                                              icon-awesome="fa-cogs"
