@@ -12,6 +12,17 @@
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        
+        <!-- Properties are prefixed with flyway. -->
+        <flyway.user>myUser</flyway.user>
+        <flyway.password>mySecretPwd</flyway.password>
+
+        <!-- List are defined as comma-separated values -->
+        <flyway.schemas>schema1,schema2,schema3</flyway.schemas>
+
+        <!-- Individual placeholders are prefixed by flyway.placeholders. -->
+        <flyway.placeholders.keyABC>valueXYZ</flyway.placeholders.keyABC>
+        <flyway.placeholders.otherplaceholder>value123</flyway.placeholders.otherplaceholder>
     </properties>
     
     <dependencies>
@@ -122,6 +133,20 @@
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator-annotation-processor</artifactId>
             <version>6.0.2.Final</version>
+        </dependency>
+        
+        <!-- https://mvnrepository.com/artifact/org.elasticsearch.client/transport -->
+        <dependency>
+            <groupId>org.elasticsearch.client</groupId>
+            <artifactId>transport</artifactId>
+            <version>6.2.4</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.elasticsearch/elasticsearch -->
+        <dependency>
+            <groupId>org.elasticsearch</groupId>
+            <artifactId>elasticsearch</artifactId>
+            <version>6.2.4</version>
         </dependency>
     </dependencies>
 
