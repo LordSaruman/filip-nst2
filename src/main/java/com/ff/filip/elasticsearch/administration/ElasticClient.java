@@ -23,7 +23,7 @@ public class ElasticClient {
     private Client client;
     private final String clusterName = "elasticsearch";
     private final String ipAddress = "127.0.0.1";
-    private final int port = 9200;
+    private final int port = 9300;
 
     public static ElasticClient getInstance() {
         if (elasticClient == null) {
@@ -38,13 +38,13 @@ public class ElasticClient {
 
     private ElasticClient() {
 
-        Settings settings = Settings.builder().put("cluster.name", clusterName).build();
-        try {
-            TransportClient transportClient = new PreBuiltTransportClient(settings);
-            transportClient.addTransportAddress(new TransportAddress(InetAddress.getByName(ipAddress), port));
-            client = transportClient;
-        } catch (UnknownHostException e) {
-            return;
-        }
+//        Settings settings = Settings.builder().put("cluster.name", clusterName).build();
+//        try {
+//            TransportClient transportClient = new PreBuiltTransportClient(settings);
+//            transportClient.addTransportAddress(new TransportAddress(InetAddress.getByName(ipAddress), port));
+//            client = transportClient;
+//        } catch (UnknownHostException e) {
+//            return;
+//        }
     }
 }

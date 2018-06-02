@@ -40,7 +40,7 @@ public class PolaganjeIndexer {
             builder.field("IspitniRok", polaganje.getIspitniRok());
             builder.field("Ispit", polaganje.getIspit());
             builder.field("Ocena", polaganje.getOcena());
-            builder.field("Prezime", polaganje.getDatum() != null ? polaganje.getDatum() : new Date());
+            builder.field("Datum", polaganje.getDatum() != null ? polaganje.getDatum() : new Date());
             
             builder.endObject();
 

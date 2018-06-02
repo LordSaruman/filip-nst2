@@ -6,7 +6,7 @@
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["/home/filip/NetBeansProjects/filip-nst2/src/main/webapp/reports/"]]></defaultValueExpression>
 	</parameter>
-	<parameter name="listPolaganja" class="java.util.Collection" isForPrompting="false"/>
+	<parameter name="listPolaganjeDuplikat" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource" isForPrompting="false"/>
 	<field name="student.brInd" class="java.lang.String"/>
 	<field name="student.ime" class="java.lang.String"/>
 	<field name="student.prezime" class="java.lang.String"/>
@@ -67,19 +67,22 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="125" splitType="Stretch">
+		<band height="145" splitType="Stretch">
 			<subreport>
-				<reportElement x="110" y="25" width="445" height="100" uuid="c96da36e-7a7d-4d5a-b4aa-ff7d25454ad8"/>
-				<subreportParameter name="listPolaganja">
-					<subreportParameterExpression><![CDATA[$P{listPolaganja}]]></subreportParameterExpression>
+				<reportElement x="10" y="0" width="461" height="72" uuid="c96da36e-7a7d-4d5a-b4aa-ff7d25454ad8"/>
+				<subreportParameter name="listPolaganjeDuplikat">
+					<subreportParameterExpression><![CDATA[$P{listPolaganjeDuplikat}]]></subreportParameterExpression>
 				</subreportParameter>
-				<dataSourceExpression><![CDATA[$P{listPolaganja}]]></dataSourceExpression>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[((net.sf.jasperreports.engine.data.JRBeanCollectionDataSource)$P{listPolaganjeDuplikat})]]></dataSourceExpression>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "StudentMaster_subreport.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="54" splitType="Stretch"/>
+		<band height="114" splitType="Stretch"/>
 	</pageFooter>
 	<summary>
 		<band height="42" splitType="Stretch"/>

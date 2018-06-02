@@ -84,14 +84,12 @@ public class MBJasperReport implements Serializable {
 
         listPolaganjeDuplikat = withSpecificStudent;
         JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(withSpecificStudent);
-        JRBeanCollectionDataSource beanCollectionDataSource2 = new JRBeanCollectionDataSource(listPolaganjeDuplikat);
 
         String reportPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/reports/StudentMaster.jasper");
-        String reportPath2 = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/reports/StudentMaster_subreport.jasper");
-        parameters.put("SUBREPORT_JASPER_FILE", listPolaganjeDuplikat);
-        JasperPrint jasperPrint = JasperFillManager.fillReport(reportPath, new HashMap(), beanCollectionDataSource);
-        JasperPrint jasperPrint2 = JasperFillManager.fillReport(reportPath2, parameters, beanCollectionDataSource2);
-
+        parameters.put("listPolaganjeDuplikat", beanCollectionDataSource);
+//        JasperPrint jasperPrint = JasperFillManager.fillReport(reportPath, parameters, beanCollectionDataSource);
+        JasperPrint jasperPrint = JasperFillManager.fillReport(reportPath, parameters, beanCollectionDataSource);
+        
         HttpServletResponse httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
         httpServletResponse.setContentType("application / pdf");
         httpServletResponse.addHeader("Content-disposition", "attachment; filename=StudentMaster_" + date + ".pdf");
