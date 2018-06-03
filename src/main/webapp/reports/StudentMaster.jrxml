@@ -67,9 +67,9 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="145" splitType="Stretch">
+		<band height="126" splitType="Stretch">
 			<subreport>
-				<reportElement x="10" y="0" width="461" height="72" uuid="c96da36e-7a7d-4d5a-b4aa-ff7d25454ad8"/>
+				<reportElement x="39" y="14" width="471" height="92" uuid="c96da36e-7a7d-4d5a-b4aa-ff7d25454ad8"/>
 				<subreportParameter name="listPolaganjeDuplikat">
 					<subreportParameterExpression><![CDATA[$P{listPolaganjeDuplikat}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -81,10 +81,4 @@
 			</subreport>
 		</band>
 	</detail>
-	<pageFooter>
-		<band height="114" splitType="Stretch"/>
-	</pageFooter>
-	<summary>
-		<band height="42" splitType="Stretch"/>
-	</summary>
 </jasperReport>

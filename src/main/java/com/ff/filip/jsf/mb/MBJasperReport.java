@@ -5,6 +5,9 @@
  */
 package com.ff.filip.jsf.mb;
 
+import com.ff.filip.domen.Ispit;
+import com.ff.filip.domen.IspitniRok;
+import com.ff.filip.domen.Mesto;
 import com.ff.filip.domen.Polaganje;
 import com.ff.filip.domen.Student;
 import com.ff.filip.jpa.dbb.PolaganjeService;
@@ -16,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -26,6 +30,7 @@ import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import org.hibernate.query.criteria.internal.predicate.IsEmptyPredicate;
 
 /**
  *
@@ -79,15 +84,23 @@ public class MBJasperReport implements Serializable {
         for (Polaganje polaganje : listPolaganje) {
             if (polaganje.getStudent().getBrInd().equals(student.getBrInd())) {
                 withSpecificStudent.add(polaganje);
+                System.out.println(polaganje.getIdPolaganje());
             }
         }
+        
+        //Kada se prosledjuje resurs (parametar neki, u ovom slucaju lista), main report NE PROSLEDJUJE prvi element subreportu
+        //kao workaround koji jedini radi kod mene jeste da ubacim random prvi element (ali za istog studenta za koji se radi izvestaj)
+        Ispit i = new Ispit(1, "nazivIspita");
+        IspitniRok ir = new IspitniRok(2, "nazivIspitnogRoka");
+        Polaganje p = new Polaganje(1, student, ir, i, 1, date);
+        withSpecificStudent.add(0, p);
 
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "INFO: ", "  Uspesno ste odstampali izvestaj"));
         listPolaganjeDuplikat = withSpecificStudent;
         JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(withSpecificStudent);
 
         String reportPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/reports/StudentMaster.jasper");
         parameters.put("listPolaganjeDuplikat", beanCollectionDataSource);
-//        JasperPrint jasperPrint = JasperFillManager.fillReport(reportPath, parameters, beanCollectionDataSource);
         JasperPrint jasperPrint = JasperFillManager.fillReport(reportPath, parameters, beanCollectionDataSource);
         
         HttpServletResponse httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
