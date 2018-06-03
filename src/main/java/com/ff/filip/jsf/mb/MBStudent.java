@@ -32,6 +32,7 @@ public class MBStudent implements Serializable {
     private Student studentForDeleting;
     private List<Student> list;
     private List<Mesto> listMesto;
+    private boolean isInitialized = false;
 
     public MBStudent() {
         student = new Student();
@@ -61,6 +62,7 @@ public class MBStudent implements Serializable {
 
     public void setStudentForDeleting(Student studentForDeleting) {
         this.studentForDeleting = studentForDeleting;
+        isInitialized = true;
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Upozorenje! ", "  Student je postavljen za brisanje."));
     }
 
@@ -89,8 +91,12 @@ public class MBStudent implements Serializable {
     }
 
     public void deleteStudent() {
-        ss.deleteStudentById(studentForDeleting);
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "INFO: ", "  Student je uspesno obrisan."));
+        if (isInitialized) {
+            ss.deleteStudentById(studentForDeleting);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "INFO: ", "  Student je uspesno obrisan."));
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Upozorenje!: ", "  Niste postavili studenta za brisanje"));
+        }
     }
 
     public void persistStudent() {
@@ -119,7 +125,7 @@ public class MBStudent implements Serializable {
     private boolean checkBrInd(Student student) {
         boolean flag = false; //br indeksa ne postoji u bazi
         flag = ss.checkBrInd(student);
-        
+
         return flag;
     }
 }

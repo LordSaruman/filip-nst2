@@ -7,7 +7,6 @@ package com.ff.filip.jsf.mb;
 
 import com.ff.filip.domen.Ispit;
 import com.ff.filip.domen.IspitniRok;
-import com.ff.filip.domen.Mesto;
 import com.ff.filip.domen.Polaganje;
 import com.ff.filip.domen.Student;
 import com.ff.filip.jpa.dbb.PolaganjeService;
@@ -19,7 +18,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -30,7 +28,6 @@ import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import org.hibernate.query.criteria.internal.predicate.IsEmptyPredicate;
 
 /**
  *
@@ -95,7 +92,6 @@ public class MBJasperReport implements Serializable {
         Polaganje p = new Polaganje(1, student, ir, i, 1, date);
         withSpecificStudent.add(0, p);
 
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "INFO: ", "  Uspesno ste odstampali izvestaj"));
         listPolaganjeDuplikat = withSpecificStudent;
         JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(withSpecificStudent);
 

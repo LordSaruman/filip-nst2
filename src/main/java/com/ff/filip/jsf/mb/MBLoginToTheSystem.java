@@ -7,11 +7,14 @@ package com.ff.filip.jsf.mb;
 
 import com.ff.filip.domen.User;
 import com.ff.filip.jpa.dbb.UserService;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -20,7 +23,8 @@ import javax.inject.Named;
  *
  * @author filip
  */
-@Named(value = "mbLogin")
+//@Named(value = "mbLogin")
+@ManagedBean(name = "mbLogin")
 @SessionScoped
 public class MBLoginToTheSystem implements Serializable {
 
@@ -62,9 +66,10 @@ public class MBLoginToTheSystem implements Serializable {
         return null;
     }
 
-    public String logout() {
+    public void logout() throws IOException {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "INFO: ", "  Uspesno ste se odjavili"));
-        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-        return "/index.xhtml?faces-redirect=true";
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        ec.invalidateSession();
+        ec.redirect(ec.getRequestContextPath() + "/index.xhtml");
     }
 }
