@@ -63,4 +63,9 @@ public class Mesto implements Serializable{
     public void setPtt(int Ptt) {
         this.Ptt = Ptt;
     }
+
+    @Override
+    public String toString() {
+        return naziv;
+    }
 }

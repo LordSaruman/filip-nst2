@@ -14,7 +14,6 @@ import java.util.List;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
-
 /**
  *
  * @author filip
@@ -36,12 +35,11 @@ public class PolaganjeIndexer {
             builder.startObject();
 
             builder.field("PolaganjeId", polaganje.getIdPolaganje());
-            builder.field("Student", polaganje.getStudent());
-            builder.field("IspitniRok", polaganje.getIspitniRok());
-            builder.field("Ispit", polaganje.getIspit());
-            builder.field("Ocena", polaganje.getOcena());
-            builder.field("Datum", polaganje.getDatum() != null ? polaganje.getDatum() : new Date());
-            
+//            builder.field("BrInd", polaganje.getStudent().getBrInd());
+//            builder.field("SifraIspitnogRoka", polaganje.getIspitniRok().getSifraIspitnogRoka());
+//            builder.field("SifraIspita", polaganje.getIspit().getSifraIspita());
+//            builder.field("Ocena", polaganje.getOcena());
+//            builder.field("Datum", polaganje.getDatum() != null ? polaganje.getDatum() : new Date());
             builder.endObject();
 
             @SuppressWarnings("unused")

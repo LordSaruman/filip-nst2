@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.ff.filip.elasticsearch.container;
+package com.ff.elasticsearch.service.search;
 
 /**
  *
  * @author filip
  */
-public class ElasticsearchSearchContainer {
+public class ElasticsearchServiceSearch {
     
 }

@@ -74,11 +74,14 @@
                 <f:metadata>
                     <f:event type="preRenderView" listener="#{mbElasticsearch.loadMesta()}"/>
                 </f:metadata>
+                <f:metadata>
+                    <f:event type="preRenderView" listener="#{mbElasticsearch.loadAll()}"/>
+                </f:metadata>
                 <b:panel collapsible="false" title="Elasticsearch - STUDENT" style="width: 400px; float: left;">
                     <h:panelGrid columnClasses="alignmentLeft" >
                         <h:outputLabel value="Broj indeksa: *" for="brojIndeksa"/>
                         <b:inputText span="12" 
-                                     value="#{mbStudent.student.brInd}" 
+                                     value="#{mbElasticsearch.student.brInd}" 
                                      required="true" 
                                      requiredMessage="Unesite broj indeksa"
                                      validatorMessage="Broj indeksa nije u odgovarajucem formatu">
@@ -88,7 +91,7 @@
 
                         <h:outputLabel value="Ime: *" for="ime"/>
                         <b:inputText span="12" 
-                                     value="#{mbStudent.student.ime}" 
+                                     value="#{mbElasticsearch.student.ime}" 
                                      required="true" 
                                      requiredMessage="Unesite ime"
                                      validatorMessage="Min 1 max 30 karaktera">
@@ -98,7 +101,7 @@
 
                         <h:outputLabel value="Prezime: *" for="prezime"/>
                         <b:inputText span="12" 
-                                     value="#{mbStudent.student.prezime}" 
+                                     value="#{mbElasticsearch.student.prezime}" 
                                      required="true" 
                                      requiredMessage="Unesite prezime"
                                      validatorMessage="Min 1 max 30 karaktera">
@@ -107,19 +110,20 @@
                         <h:message for="prezime" style="color: red"/>
 
                         <h:outputLabel value="Mesto: " styleClass="panel-body" for="mesto"/>
-                        <b:selectOneMenu value="#{mbStudent.student.mesto}" colMd="12" required="true" labelColMd="2">
-                            <f:selectItems value="#{mbStudent.listMesto}" 
+                        <b:selectOneMenu value="#{mbElasticsearch.student.mesto}" colMd="12" required="true" labelColMd="2">
+                            <f:selectItems value="#{mbElasticsearch.listMesto}" 
                                            var="m"
                                            itemLabel="#{m.naziv}"
                                            itemValue="#{m}"/>
                         </b:selectOneMenu>
                         <h:message for="mesto" style="color: red"/>
                     </h:panelGrid>
-                    <b:commandButton value="Sacuvaj" action="#{mbStudent.persistStudent()}" look="primary" />
-
+                    <b:commandButton value="Sacuvaj" action="#{mbElasticsearch.persistStudent()}" look="primary" />
+                    <b:commandButton value="Obrisi studenta" action="#{mbElasticsearch.deleteStudent()}" look="primary" disabled="#{mbElasticsearch.selectedStudent == null}"/>
                 </b:panel>
             </h:form>
         </div>
+
         <b:panel collapsible="false" title="Elasticsearch - STUDENT" style="width: 1300px; float: left">
             <div class="panel-body">
                 <h:form id="j_idt237">
@@ -134,9 +138,17 @@
                             <div class="col-sm-12">
                                 <h:form>
                                     <f:metadata>
-                                        <f:event type="preRenderView" listener="#{mbStudent.findAllStudent()}"/>
+                                        <f:event type="preRenderView" listener="#{mbElasticsearch.findAllStudent()}"/>
                                     </f:metadata>
-                                    <b:dataTable value="#{mbStudent.list}"
+                                    <h:inputText id="wildCard" value="#{mbElasticsearch.wildCardQuery}" styleClass="panel-body">
+                                        <f:passThroughAttribute name="placeholder" value="Pretrazi..." />
+                                        <f:ajax event="keyup" execute="wildCard" listener="#{mbElasticsearch.fullTextSearch()}" render="studentTable" />
+                                        <f:ajax event="blur" listener="#{mbElasticsearch.clearWildCardQuery()}" render="@this" />
+                                    </h:inputText>
+                                    <br></br>
+                                    <br></br>
+                                    <b:dataTable id="studentTable" 
+                                                 value="#{mbElasticsearch.studentList}"
                                                  var="student"
                                                  class="table table-bordered table-striped table-hover dataTable no-footer" 
                                                  border="true" 
@@ -153,30 +165,19 @@
                                                 <th class="sorting" tabindex="0" rowspan="1" colspan="1" style="width: 125px;">Prezime</th>
                                                 <th class="sorting" tabindex="0" rowspan="1" colspan="1" style="width: 125px;">Ptt mesta</th>
                                                 <th class="sorting" tabindex="0" rowspan="1" colspan="1" style="width: 125px;">Naziv mesta</th>
-                                                <th tabindex="0" rowspan="1" colspan="1" style="width: 25px;">Brisanje studenta</th>
                                             </tr>
                                         </f:facet>
-                                        <b:dataTableColumn value="#{student.brInd}" data-order="#{mbStudent.student.brInd}"/>
+                                        <b:dataTableColumn value="#{student.brInd}" data-order="#{mbElasticsearch.student.brInd}"/>
                                         <b:dataTableColumn value="#{student.ime}" />
                                         <b:dataTableColumn value="#{student.prezime}" />
                                         <b:dataTableColumn value="#{student.mesto.ptt}" />
                                         <b:dataTableColumn value="#{student.mesto.naziv}" />
-                                        <b:dataTableColumn>
-                                            <b:commandButton look="default" 
-                                                             action="#{mbStudent.setStudentForDeleting(student)}"
-                                                             size="xs" 
-                                                             icon-awesome="fa-cogs"
-                                                             value="Postavi za brisanje">
-                                            </b:commandButton>
-                                            <span></span>
-                                            <b:commandButton look="danger" 
-                                                             action="#{mbStudent.deleteStudent()}"
-                                                             size="xs" 
-                                                             icon-awesome="fa-remove"
-                                                             value="Obrisi">
-                                            </b:commandButton>
-
-                                        </b:dataTableColumn>
+                                        <b:commandButton look="danger" 
+                                                         action="#{mbElasticsearch.prepareDocumentList()}"
+                                                         size="xs" 
+                                                         icon-awesome="fa-folder"
+                                                         value="Vrati sva dokumenta">
+                                        </b:commandButton>
                                     </b:dataTable>
                                 </h:form>
                             </div>

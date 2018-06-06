@@ -19,32 +19,35 @@ import org.elasticsearch.transport.client.PreBuiltTransportClient;
  */
 public class ElasticClient {
 
-    private static ElasticClient elasticClient;
+    private static ElasticClient INSTANCE = null;
+
     private Client client;
+
     private final String clusterName = "elasticsearch";
     private final String ipAddress = "127.0.0.1";
     private final int port = 9300;
 
     public static ElasticClient getInstance() {
-        if (elasticClient == null) {
-            elasticClient = new ElasticClient();
+        if (INSTANCE == null) {
+            INSTANCE = new ElasticClient();
         }
-        return elasticClient;
-    }
-
-    public Client getClient() {
-        return client;
+        return INSTANCE;
     }
 
     private ElasticClient() {
 
-//        Settings settings = Settings.builder().put("cluster.name", clusterName).build();
-//        try {
-//            TransportClient transportClient = new PreBuiltTransportClient(settings);
-//            transportClient.addTransportAddress(new TransportAddress(InetAddress.getByName(ipAddress), port));
-//            client = transportClient;
-//        } catch (UnknownHostException e) {
-//            return;
-//        }
+        Settings settings = Settings.builder().put("cluster.name", clusterName).build();
+
+        try {
+            TransportClient transportClient = new PreBuiltTransportClient(settings);
+            transportClient.addTransportAddress(new TransportAddress(InetAddress.getByName(ipAddress), port));
+            client = transportClient;
+        } catch (UnknownHostException e) {
+            return;
+        }
+    }
+
+    public Client getClient() {
+        return client;
     }
 }

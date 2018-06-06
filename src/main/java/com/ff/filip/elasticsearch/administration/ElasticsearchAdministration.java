@@ -22,7 +22,7 @@ import org.elasticsearch.index.IndexNotFoundException;
  *
  * @author filip
  */
-public class ElasticsearchAdministrator {
+public class ElasticsearchAdministration {
 
     public void createAllIndexes() {
         for (ESIndex index : ESIndex.values()) {

@@ -6,7 +6,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
     <h:head>
-        <title>Pocetna strana</title>
+        <title>Elasticsearch - student</title>
 
         <link rel="shortcut icon" type="image/x-icon" href="#{resource['images/favicon.ico']}"/>
         <h:outputStylesheet library="css" name="bootstrap.min.css"/>
@@ -14,6 +14,32 @@
 
     </h:head>
     <h:body>
+
+        <h:form>
+            <b:growl id="growl3" 
+                     global-only="true" 
+                     show-detail="true" 
+                     severity="info" 
+                     allow-dismiss="true"
+                     animation-enter="animated bounceInDown"
+                     animation-exit="animated flipOutX"/>
+
+            <b:growl id="growl4" 
+                     global-only="true" 
+                     show-detail="true" 
+                     severity="warn" 
+                     allow-dismiss="true"
+                     animation-enter="animated bounceInDown"
+                     animation-exit="animated flipOutX"/>
+            <b:growl id="growl6" 
+                     global-only="true" 
+                     show-detail="true" 
+                     severity="error" 
+                     allow-dismiss="true"
+                     animation-enter="animated bounceInDown"
+                     animation-exit="animated flipOutX"/>
+        </h:form>
+
         <b:navBar class="navbar navbar-inverse navbar-fixed-top" fluid="true" brand="filip-nst2">
             <div class="container">
                 <div class="navbar-header">
@@ -30,6 +56,8 @@
                             </b:dropMenu>
                             <b:navLink value="Unesi polaganje" href="addpolaganje.xhtml" icon-awesome="fa-university"></b:navLink>
                             <b:dropMenu value="Elasticsearch" icon-awesome="fa-search">
+                                <b:navLink value="ES Student" href="elasticSearchStudent.xhtml"></b:navLink>
+                                <b:navLink value="ES Ispit" href="elasticSearchIspit.xhtml"></b:navLink>
                                 <b:navLink value="ES Indeksiranje" href="elasticSearchIndexing.xhtml"></b:navLink>
                             </b:dropMenu>
                             <b:navLink value="Logout" action="#{mbLogin.logout()}" href="index.xhtml" icon-awesome="fa-sign-out" ></b:navLink>
@@ -39,15 +67,25 @@
             </div>
         </b:navBar>
 
-        <h:form>
-            <b:growl id="growl6" 
-                     global-only="true" 
-                     show-detail="true" 
-                     severity="info" 
-                     allow-dismiss="true"
-                     animation-enter="animated bounceInDown"
-                     animation-exit="animated flipOutX"/>
-        </h:form>
+        <br></br>
+        <br></br>
+        <br></br>
+        <div align="left">
+            <h:form>
+                <b:commandButton look="danger" 
+                                 action="#{mbElasticsearch.indexStudent()}"
+                                 size="xs" 
+                                 icon-awesome="fa-folder"
+                                 value="Indeksiraj studente">
+                </b:commandButton>
+                <b:commandButton look="danger" 
+                                 action="#{mbElasticsearch.indexIspit()}"
+                                 size="xs" 
+                                 icon-awesome="fa-folder"
+                                 value="Indeksiraj ispite">
+                </b:commandButton>
+            </h:form>
+        </div>
     </h:body>
 </html>
 

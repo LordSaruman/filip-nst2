@@ -1,0 +1,10 @@
+{
+    "properties": {
+        "SifraIspita": {
+            "type": "integer"
+        },
+        "NazivIspita": {
+            "type": "text"
+        }
+    }
+}

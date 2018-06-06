@@ -1,0 +1,34 @@
+{
+    "properties": {
+        "PolaganjeId": {
+            "type": "integer"
+        },
+        "Student": {
+            "properties": {
+                "BrInd": {
+                    "type": "text"
+                }
+            }
+        },
+        "IspitniRok": {
+            "properties": {
+                "SifraIspitnogRoka": {
+                    "type": "integer"
+                }
+            }
+        },
+        "Ispit": {
+            "properties": {
+                "SifraIspita": {
+                    "type": "integer"
+                }
+            }
+        },
+        "Ocena": {
+            "type": "integer"
+        },
+        "Datum": {
+            "type": "date"
+        }
+    }
+}

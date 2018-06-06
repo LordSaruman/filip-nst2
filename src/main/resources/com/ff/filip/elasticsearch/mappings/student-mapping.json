@@ -1,0 +1,20 @@
+{
+    "properties": {
+        "BrInd": {
+            "type": "text"
+        },
+        "Ime": {
+            "type": "text"
+        },
+        "Prezime": {
+            "type": "text"
+        },
+        "mesto": {
+            "properties": {
+                "Ptt": {
+                    "type": "integer"
+                }
+            }
+        }
+    }
+}

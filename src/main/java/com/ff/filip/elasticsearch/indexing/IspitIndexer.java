@@ -5,7 +5,7 @@
  */
 package com.ff.filip.elasticsearch.indexing;
 
-import com.ff.filip.domen.Student;
+import com.ff.filip.domen.Ispit;
 import com.ff.filip.elasticsearch.administration.ESIndex;
 import com.ff.filip.elasticsearch.administration.ElasticClient;
 import java.io.IOException;
@@ -13,39 +13,38 @@ import java.util.List;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
+
 /**
  *
  * @author filip
  */
-public class StudentIndexer {
+public class IspitIndexer {
 
-    public void indexStudents(List<Student> students) {
-        System.out.println("Indexing students");
-        for (Student student : students) {
-            indexStudent(student);
+    public void indexStudents(List<Ispit> ispits) {
+        System.out.println("Indexing ispits");
+        for (Ispit ispit : ispits) {
+            indexIspit(ispit);
         }
     }
 
-    private void indexStudent(Student student) {
-        System.out.println("Indexing student " + student);
+    private void indexIspit(Ispit ispit) {
+        System.out.println("Indexing ispit " + ispit);
 
         try {
             XContentBuilder builder = XContentFactory.jsonBuilder();
             builder.startObject();
 
-            builder.field("BrInd", student.getBrInd());
-            builder.field("Ime", student.getIme() != null ? student.getIme() : "");
-            builder.field("Prezime", student.getPrezime() != null ? student.getPrezime() : "");
-            builder.field("Mesto", student.getMesto());
+            builder.field("SifraIspita", ispit.getSifraIspita());
+            builder.field("NazivIspita", ispit.getNazivIspita());
 
             builder.endObject();
 
             @SuppressWarnings("unused")
             IndexResponse response = ElasticClient.getInstance().getClient()
                     .prepareIndex(
-                            ESIndex.STUDENT.name().toLowerCase(),
-                            ESIndex.STUDENT.getTypes()[0],
-                            String.valueOf(student.getBrInd()))
+                            ESIndex.ISPIT.name().toLowerCase(),
+                            ESIndex.ISPIT.getTypes()[0],
+                            String.valueOf(ispit.getSifraIspita()))
                     .setSource(builder)
                     .get();
         } catch (IOException e) {

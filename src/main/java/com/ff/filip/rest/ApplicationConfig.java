@@ -30,7 +30,6 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
-        resources.add(com.ff.filip.elasticsearch.container.JavaMain.class);
         resources.add(com.ff.filip.rest.service.IspitFacadeREST.class);
         resources.add(com.ff.filip.rest.service.MestoFacadeREST.class);
         resources.add(com.ff.filip.rest.service.StudentFacadeREST.class);

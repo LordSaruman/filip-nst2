@@ -11,6 +11,7 @@ package com.ff.filip.elasticsearch.administration;
  */
 public enum ESIndex {
 
+    ISPIT("ispit"),
     POLAGANJE("polaganje"),
     STUDENT("student");
 
