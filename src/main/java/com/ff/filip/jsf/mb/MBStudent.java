@@ -23,6 +23,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -38,7 +39,7 @@ public class MBStudent implements Serializable {
 
     @Inject
     private StudentService ss;
-    
+
     private Student student;
     private Student studentForEditing;
     private Student studentForDeleting;
@@ -99,6 +100,11 @@ public class MBStudent implements Serializable {
     }
 
     public List<Mesto> getListMesto() {
+        return listMesto;
+    }
+
+    public List<Mesto> listMestoES() {
+        listMesto.add(0, new Mesto(0, "Please select"));
         return listMesto;
     }
 
@@ -165,13 +171,33 @@ public class MBStudent implements Serializable {
         list.clear();
         List<Student> listTemp = new ArrayList<>();
         Student temporary = null;
+        boolean flag = true;
+
+        if (student.getMesto().getPtt() == 0) {
+            flag = false;
+        }
 
         try {
-            QueryBuilder qb = QueryBuilders.queryStringQuery(wildCardQuery + "*")
-                    .defaultField("BrInd")
-                    .defaultField("Ime")
-                    .defaultField("Prezime")
-                    .defaultOperator(Operator.AND);
+            QueryBuilder qb;
+            if (flag) {
+                BoolQueryBuilder booleanQuery = QueryBuilders.boolQuery();
+                
+                qb = QueryBuilders.queryStringQuery(wildCardQuery + "*")
+                        .defaultField("BrInd")
+                        .defaultField("Ime")
+                        .defaultField("Prezime")
+                        .defaultOperator(Operator.AND);
+                
+                QueryBuilder mestoIdQuery = QueryBuilders.termQuery("mesto.Ptt", student.getMesto().getPtt());
+                booleanQuery.must(qb);
+                booleanQuery.must(mestoIdQuery);
+            } else {
+                qb = QueryBuilders.queryStringQuery(wildCardQuery + "*")
+                        .defaultField("BrInd")
+                        .defaultField("Ime")
+                        .defaultField("Prezime")
+                        .defaultOperator(Operator.AND);
+            }
 
             SearchResponse searchResponse = ElasticClient.getInstance().getClient()
                     .prepareSearch(ESIndex.STUDENT.name().toLowerCase())
@@ -183,15 +209,15 @@ public class MBStudent implements Serializable {
                 for (SearchHit hit : searchResponse.getHits()) {
                     try {
                         Map<String, Object> map = hit.getSourceAsMap();
-                        
+
                         String brIndeksa = map.get("BrInd").toString();
                         String ime = map.get("Ime").toString();
                         String prezime = map.get("Prezime").toString();
                         Mesto mesto = new Mesto();
                         mesto = (Mesto) map.get("mesto");
-                        
-                        temporary = new Student(brIndeksa, ime, prezime,mesto);
-                        
+
+                        temporary = new Student(brIndeksa, ime, prezime, mesto);
+
                     } catch (Exception e) {
                         System.out.println("Exception in fullTextSearch: " + e.getMessage());
                     }

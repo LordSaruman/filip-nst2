@@ -85,8 +85,14 @@
                                             <f:passThroughAttribute name="placeholder" value="Pretrazi..."/>
                                             <f:ajax event="keyup" delay="700" listener="#{mbStudent.fullTextSearch()}" execute="@this" render="studentTable"/>
                                         </h:inputText>
-                                        
-                                        
+
+                                        <h:outputLabel value="Mesto: " styleClass="panel-body" for="mesto"/>
+                                        <b:selectOneMenu value="#{mbStudent.student.mesto}" colMd="2" required="true" labelColMd="2">
+                                            <f:selectItems value="#{mbStudent.listMestoES}" 
+                                                           var="m"
+                                                           itemLabel="#{m.naziv}"
+                                                           itemValue="#{m}"/>
+                                        </b:selectOneMenu>
                                     </b:panel>
                                     <br></br>
                                     <b:dataTable id="studentTable"
