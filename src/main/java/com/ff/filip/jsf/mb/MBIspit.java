@@ -6,6 +6,8 @@
 package com.ff.filip.jsf.mb;
 
 import com.ff.filip.domen.Ispit;
+import com.ff.filip.elasticsearch.administration.ESIndex;
+import com.ff.filip.elasticsearch.administration.ElasticClient;
 import com.ff.filip.jpa.dbb.IspitService;
 import java.io.IOException;
 import java.io.Serializable;
@@ -14,6 +16,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -26,6 +29,14 @@ import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import org.elasticsearch.action.search.SearchRequestBuilder;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.search.SearchType;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.Operator;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.SearchHit;
 
 /**
  *
@@ -43,11 +54,22 @@ public class MBIspit implements Serializable {
     private Ispit ispitForDeleting;
     private List<Ispit> listIspit;
     private boolean isInitialized = false;
+    private String wildCardQuery;
 
+    @PostConstruct
+    public void init(){
+        ispit = new Ispit();
+        ispitForEditing = new Ispit();
+        ispitForDeleting = new Ispit();
+        wildCardQuery = "";
+        findAllIspit();
+    }
+    
     public MBIspit() {
         ispit = new Ispit();
         ispitForEditing = new Ispit();
         ispitForDeleting = new Ispit();
+        wildCardQuery = "";
     }
 
     public Ispit getIspit() {
@@ -82,6 +104,14 @@ public class MBIspit implements Serializable {
 
     public void setListIspit(List<Ispit> listIspit) {
         this.listIspit = listIspit;
+    }
+
+    public String getWildCardQuery() {
+        return wildCardQuery;
+    }
+
+    public void setWildCardQuery(String wildCardQuery) {
+        this.wildCardQuery = wildCardQuery;
     }
 
     public void findAllIspit() {
@@ -146,6 +176,44 @@ public class MBIspit implements Serializable {
 
         JasperExportManager.exportReportToPdfStream(jasperPrint, servletOutputStream);
         FacesContext.getCurrentInstance().responseComplete();
+    }
+
+    public void fullTextSearch() {
+        listIspit.clear();
+        List<Ispit> listTemp = new ArrayList<>();
+        Ispit temporary = null;
+
+        try {
+            QueryBuilder qb = QueryBuilders.queryStringQuery(wildCardQuery + "*")
+                    .defaultField("NazivIspita")
+                    .defaultOperator(Operator.AND);
+
+            SearchResponse searchResponse = ElasticClient.getInstance().getClient()
+                    .prepareSearch(ESIndex.ISPIT.name().toLowerCase())
+                    .setTypes(ESIndex.ISPIT.getTypes()[0])
+                    .setQuery(qb)
+                    .execute().actionGet();
+
+            if (searchResponse != null) {
+                for (SearchHit hit : searchResponse.getHits()) {
+                    try {
+                        Map<String, Object> map = hit.getSourceAsMap();
+                        int sifraIspita = Integer.parseInt(map.get("SifraIspita").toString());
+                        String nazivIspita = map.get("NazivIspita").toString();
+
+                        temporary = new Ispit(sifraIspita, nazivIspita);
+
+                    } catch (Exception e) {
+                        System.out.println("Exception in fullTextSearch: " + e.getMessage());
+                    }
+                    listIspit.add(temporary);
+                    listTemp.add(temporary);
+                }
+            }
+            setListIspit(listTemp);
+        } catch (Exception ex) {
+            System.out.println("Exception: " + ex.toString());
+        }
     }
 
 }

@@ -121,9 +121,9 @@ public class MBElasticsearch implements Serializable {
         
         flag = FacadeClass.getInstance().indexStudents(listStudent);
         if (flag) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "INFO: ", "  Uspesno je izvrseno indeksiranje."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "INFO: ", "  Uspesno je izvrseno indeksiranje studenata."));
         } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Greska! ", "  Doslo je do greske prilikom indeksiranja."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Greska! ", "  Doslo je do greske prilikom indeksiranja studenata."));
         }
     }
 
@@ -137,9 +137,9 @@ public class MBElasticsearch implements Serializable {
         
         flag = FacadeClass.getInstance().indexIspit(listIspit);
         if (flag) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "INFO: ", "  Uspesno je izvrseno indeksiranje."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "INFO: ", "  Uspesno je izvrseno indeksiranje ispita."));
         } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Greska! ", "  Doslo je do greske prilikom indeksiranja."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Greska! ", "  Doslo je do greske prilikom indeksiranja ispita."));
         }
     }
 
@@ -186,7 +186,7 @@ public class MBElasticsearch implements Serializable {
     }
 
     public void fullTextSearch() {
-
+        
     }
 
     public void prepareDocumentList() {

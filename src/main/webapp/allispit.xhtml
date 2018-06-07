@@ -41,7 +41,6 @@
             <br></br>
             <br></br>
             <br></br>
-            <br></br>
             <h:form>
                 <b:growl id="growl1" 
                          global-only="true" 
@@ -59,7 +58,6 @@
                          animation-enter="animated bounceInDown"
                          animation-exit="animated flipOutX"/>
             </h:form>
-
             <div class="panel-body">
                 <h:form id="j_idt237">
                     <div id="qwerty1" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
@@ -72,17 +70,22 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <h:form>
-                                    <f:metadata>
-                                        <f:event type="preRenderView" listener="#{mbIspit.findAllIspit()}"/>
-                                    </f:metadata>
-                                    <b:dataTable value="#{mbIspit.listIspit}"
+                                    <b:panel collapsible="true" title="Elasticsearch - pretraga ispita">
+                                        <h:inputText styleClass="queryText" autocomplete="off" value="#{mbIspit.wildCardQuery}">
+                                            <f:passThroughAttribute name="placeholder" value="Pretrazi..."/>
+                                            <f:ajax event="keyup" delay="700" listener="#{mbIspit.fullTextSearch()}" execute="@this" render="ispitTable"/>
+                                        </h:inputText>
+                                    </b:panel>
+                                    <br></br>
+                                    <b:dataTable id="ispitTable" 
+                                                 value="#{mbIspit.listIspit}"
                                                  var="ispit"
                                                  class="table table-bordered table-striped table-hover dataTable no-footer" 
                                                  border="true" 
                                                  searching="true">
                                         <f:facet name="header">
                                             <tr role = "row">
-                                                <th colspan="1" rowspan="2" class="sorting" style="width: 250px;">Ispit - sifra ispita</th>
+                                                <th colspan="1" rowspan="2" class="sorting" style="width: 250px;" >Ispit - sifra ispita</th>
                                                 <th colspan="1" rowspan="1">Osnovne info o ispitu</th>
                                                 <th colspan="2" rowspan="1">Dodatne akcije</th>
                                             </tr>
@@ -92,7 +95,7 @@
                                                 <th tabindex="0" rowspan="1" colspan="1" style="width: 25px;">Brisanje ispita</th>
                                             </tr>
                                         </f:facet>
-                                        <b:dataTableColumn value="#{ispit.sifraIspita}" data-order="#{mbIspit.ispit.sifraIspita}"/>
+                                        <b:dataTableColumn value="#{ispit.sifraIspita}" />
                                         <b:dataTableColumn value="#{ispit.nazivIspita}" />
                                         <b:dataTableColumn>
                                             <b:commandButton look="primary" 

@@ -7,14 +7,26 @@ package com.ff.filip.jsf.mb;
 
 import com.ff.filip.domen.Mesto;
 import com.ff.filip.domen.Student;
+import com.ff.filip.elasticsearch.administration.ESIndex;
+import com.ff.filip.elasticsearch.administration.ElasticClient;
+import com.ff.filip.jpa.dbb.IspitService;
+import com.ff.filip.jpa.dbb.IspitnirokService;
 import com.ff.filip.jpa.dbb.StudentService;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.index.query.Operator;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.SearchHit;
 
 /**
  *
@@ -26,18 +38,30 @@ public class MBStudent implements Serializable {
 
     @Inject
     private StudentService ss;
-
+    
     private Student student;
     private Student studentForEditing;
     private Student studentForDeleting;
     private List<Student> list;
     private List<Mesto> listMesto;
     private boolean isInitialized = false;
+    private String wildCardQuery;
+
+    @PostConstruct
+    public void init() {
+        student = new Student();
+        studentForDeleting = new Student();
+        studentForEditing = new Student();
+        wildCardQuery = "";
+        findAllStudent();
+        findAllMesto();
+    }
 
     public MBStudent() {
         student = new Student();
         studentForDeleting = new Student();
         studentForEditing = new Student();
+        wildCardQuery = "";
     }
 
     public Student getStudent() {
@@ -80,6 +104,14 @@ public class MBStudent implements Serializable {
 
     public void setListMesto(List<Mesto> listMesto) {
         this.listMesto = listMesto;
+    }
+
+    public String getWildCardQuery() {
+        return wildCardQuery;
+    }
+
+    public void setWildCardQuery(String wildCardQuery) {
+        this.wildCardQuery = wildCardQuery;
     }
 
     public void findAllStudent() {
@@ -127,5 +159,50 @@ public class MBStudent implements Serializable {
         flag = ss.checkBrInd(student);
 
         return flag;
+    }
+
+    public void fullTextSearch() {
+        list.clear();
+        List<Student> listTemp = new ArrayList<>();
+        Student temporary = null;
+
+        try {
+            QueryBuilder qb = QueryBuilders.queryStringQuery(wildCardQuery + "*")
+                    .defaultField("BrInd")
+                    .defaultField("Ime")
+                    .defaultField("Prezime")
+                    .defaultOperator(Operator.AND);
+
+            SearchResponse searchResponse = ElasticClient.getInstance().getClient()
+                    .prepareSearch(ESIndex.STUDENT.name().toLowerCase())
+                    .setTypes(ESIndex.STUDENT.getTypes()[0])
+                    .setQuery(qb)
+                    .execute().actionGet();
+
+            if (searchResponse != null) {
+                for (SearchHit hit : searchResponse.getHits()) {
+                    try {
+                        Map<String, Object> map = hit.getSourceAsMap();
+                        
+                        String brIndeksa = map.get("BrInd").toString();
+                        String ime = map.get("Ime").toString();
+                        String prezime = map.get("Prezime").toString();
+                        Mesto mesto = new Mesto();
+                        mesto = (Mesto) map.get("mesto");
+                        
+                        temporary = new Student(brIndeksa, ime, prezime,mesto);
+                        
+                    } catch (Exception e) {
+                        System.out.println("Exception in fullTextSearch: " + e.getMessage());
+                    }
+                    list.add(temporary);
+                    listTemp.add(temporary);
+                }
+            }
+            setList(listTemp);
+        } catch (Exception ex) {
+            System.out.println("Exception: " + ex.toString());
+        }
+
     }
 }
