@@ -14,6 +14,7 @@ import com.ff.filip.jpa.dbb.IspitnirokService;
 import com.ff.filip.jpa.dbb.StudentService;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
@@ -41,6 +42,7 @@ public class MBStudent implements Serializable {
     private StudentService ss;
 
     private Student student;
+    private Mesto mestoES;
     private Student studentForEditing;
     private Student studentForDeleting;
     private List<Student> list;
@@ -51,18 +53,28 @@ public class MBStudent implements Serializable {
     @PostConstruct
     public void init() {
         student = new Student();
+        mestoES = new Mesto();
         studentForDeleting = new Student();
         studentForEditing = new Student();
         wildCardQuery = "";
-        findAllStudent();
         findAllMesto();
+        findAllStudent();
     }
 
     public MBStudent() {
         student = new Student();
+        mestoES = new Mesto();
         studentForDeleting = new Student();
         studentForEditing = new Student();
         wildCardQuery = "";
+    }
+
+    public Mesto getMestoES() {
+        return mestoES;
+    }
+
+    public void setMestoES(Mesto mestoES) {
+        this.mestoES = mestoES;
     }
 
     public Student getStudent() {
@@ -100,6 +112,7 @@ public class MBStudent implements Serializable {
     }
 
     public List<Mesto> getListMesto() {
+        listMesto.add(0, new Mesto(0, "Please select"));
         return listMesto;
     }
 
@@ -172,8 +185,9 @@ public class MBStudent implements Serializable {
         List<Student> listTemp = new ArrayList<>();
         Student temporary = null;
         boolean flag = true;
+        Mesto mesto = new Mesto();
 
-        if (student.getMesto().getPtt() == 0) {
+        if (mestoES.getPtt() == 0) {
             flag = false;
         }
 
@@ -181,13 +195,13 @@ public class MBStudent implements Serializable {
             QueryBuilder qb;
             if (flag) {
                 BoolQueryBuilder booleanQuery = QueryBuilders.boolQuery();
-                
+
                 qb = QueryBuilders.queryStringQuery(wildCardQuery + "*")
                         .defaultField("BrInd")
                         .defaultField("Ime")
                         .defaultField("Prezime")
-                        .defaultOperator(Operator.AND);
-                
+                        .defaultOperator(Operator.OR);
+
                 QueryBuilder mestoIdQuery = QueryBuilders.termQuery("mesto.Ptt", student.getMesto().getPtt());
                 booleanQuery.must(qb);
                 booleanQuery.must(mestoIdQuery);
@@ -196,7 +210,7 @@ public class MBStudent implements Serializable {
                         .defaultField("BrInd")
                         .defaultField("Ime")
                         .defaultField("Prezime")
-                        .defaultOperator(Operator.AND);
+                        .defaultOperator(Operator.OR);
             }
 
             SearchResponse searchResponse = ElasticClient.getInstance().getClient()
@@ -209,12 +223,16 @@ public class MBStudent implements Serializable {
                 for (SearchHit hit : searchResponse.getHits()) {
                     try {
                         Map<String, Object> map = hit.getSourceAsMap();
+                        Map<String, Object> newMap = new HashMap<>();
 
                         String brIndeksa = map.get("BrInd").toString();
                         String ime = map.get("Ime").toString();
                         String prezime = map.get("Prezime").toString();
-                        Mesto mesto = new Mesto();
-                        mesto = (Mesto) map.get("mesto");
+
+                        Map<String, Object> innerObject = (Map<String, Object>) map.get("mesto");
+                        int pttMesto = Integer.parseInt(innerObject.get("Ptt").toString());
+                        String nazivMestaM = innerObject.get("NazivMesta").toString();
+                        mesto = new Mesto(pttMesto, nazivMestaM);
 
                         temporary = new Student(brIndeksa, ime, prezime, mesto);
 

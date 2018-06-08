@@ -36,8 +36,11 @@ public class StudentIndexer {
             builder.field("BrInd", student.getBrInd());
             builder.field("Ime", student.getIme() != null ? student.getIme() : "");
             builder.field("Prezime", student.getPrezime() != null ? student.getPrezime() : "");
-            builder.field("Mesto", student.getMesto());
-
+                builder.startObject("mesto");
+                builder.field("Ptt", student.getMesto().getPtt());
+                builder.field("NazivMesta", student.getMesto().getNaziv() != null ? student.getMesto().getNaziv() : "");
+                builder.endObject();
+            
             builder.endObject();
 
             @SuppressWarnings("unused")

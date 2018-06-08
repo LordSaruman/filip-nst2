@@ -13,6 +13,9 @@
             "properties": {
                 "Ptt": {
                     "type": "integer"
+                },
+                "NazivMesta":{
+                    "type" : "text"
                 }
             }
         }
