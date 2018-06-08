@@ -11,4 +11,12 @@ package com.ff.elasticsearch.service.search;
  */
 public class ElasticsearchServiceSearch {
     
+    private static ElasticsearchServiceSearch elasticsearchServiceSearch;
+    
+    public static ElasticsearchServiceSearch getInstance(){
+        if (elasticsearchServiceSearch == null) {
+            elasticsearchServiceSearch = new ElasticsearchServiceSearch();
+        }
+        return elasticsearchServiceSearch;
+    }
 }

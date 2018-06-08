@@ -193,11 +193,11 @@ public class MBStudent implements Serializable {
 
         try {
             QueryBuilder qb;
+            SearchResponse searchResponse;
             if (flag) {
                 BoolQueryBuilder booleanQuery = QueryBuilders.boolQuery();
 
                 qb = QueryBuilders.queryStringQuery(wildCardQuery + "*")
-                        .defaultField("BrInd")
                         .defaultField("Ime")
                         .defaultField("Prezime")
                         .defaultOperator(Operator.OR);
@@ -205,19 +205,24 @@ public class MBStudent implements Serializable {
                 QueryBuilder mestoIdQuery = QueryBuilders.termQuery("mesto.Ptt", student.getMesto().getPtt());
                 booleanQuery.must(qb);
                 booleanQuery.must(mestoIdQuery);
+
+                searchResponse = ElasticClient.getInstance().getClient()
+                        .prepareSearch(ESIndex.STUDENT.name().toLowerCase())
+                        .setTypes(ESIndex.STUDENT.getTypes()[0])
+                        .setQuery(booleanQuery)
+                        .execute().actionGet();
             } else {
                 qb = QueryBuilders.queryStringQuery(wildCardQuery + "*")
-                        .defaultField("BrInd")
                         .defaultField("Ime")
                         .defaultField("Prezime")
                         .defaultOperator(Operator.OR);
-            }
 
-            SearchResponse searchResponse = ElasticClient.getInstance().getClient()
-                    .prepareSearch(ESIndex.STUDENT.name().toLowerCase())
-                    .setTypes(ESIndex.STUDENT.getTypes()[0])
-                    .setQuery(qb)
-                    .execute().actionGet();
+                searchResponse = ElasticClient.getInstance().getClient()
+                        .prepareSearch(ESIndex.STUDENT.name().toLowerCase())
+                        .setTypes(ESIndex.STUDENT.getTypes()[0])
+                        .setQuery(qb)
+                        .execute().actionGet();
+            }
 
             if (searchResponse != null) {
                 for (SearchHit hit : searchResponse.getHits()) {
