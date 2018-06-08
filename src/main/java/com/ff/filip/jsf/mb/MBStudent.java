@@ -185,7 +185,9 @@ public class MBStudent implements Serializable {
         List<Student> listTemp = new ArrayList<>();
         Student temporary = null;
         boolean flag = true;
-        Mesto mesto = new Mesto();
+        
+        //za testiranje
+        Mesto mesto = new Mesto(11000, "Beograd");
 
         if (mestoES.getPtt() == 0) {
             flag = false;
@@ -202,7 +204,7 @@ public class MBStudent implements Serializable {
                         .defaultField("Prezime")
                         .defaultOperator(Operator.OR);
 
-                QueryBuilder mestoIdQuery = QueryBuilders.termQuery("mesto.Ptt", student.getMesto().getPtt());
+                QueryBuilder mestoIdQuery = QueryBuilders.termQuery("mesto.Ptt", mesto.getPtt());
                 booleanQuery.must(qb);
                 booleanQuery.must(mestoIdQuery);
 
