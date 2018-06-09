@@ -5,9 +5,11 @@
  */
 package com.ff.filip.jsf.mb;
 
+import com.ff.elasticsearch.service.search.ElasticsearchServiceSearch;
 import com.ff.filip.domen.Ispit;
 import com.ff.filip.elasticsearch.administration.ESIndex;
 import com.ff.filip.elasticsearch.administration.ElasticClient;
+import com.ff.filip.jpa.dbb.ElasticsearchSearchService;
 import com.ff.filip.jpa.dbb.IspitService;
 import java.io.IOException;
 import java.io.Serializable;
@@ -184,25 +186,12 @@ public class MBIspit implements Serializable {
         Ispit temporary = null;
 
         try {
-            QueryBuilder qb = QueryBuilders.queryStringQuery(wildCardQuery + "*")
-                    .defaultField("NazivIspita")
-                    .defaultOperator(Operator.AND);
-
-            SearchResponse searchResponse = ElasticClient.getInstance().getClient()
-                    .prepareSearch(ESIndex.ISPIT.name().toLowerCase())
-                    .setTypes(ESIndex.ISPIT.getTypes()[0])
-                    .setQuery(qb)
-                    .execute().actionGet();
+            SearchResponse searchResponse = ElasticsearchServiceSearch.getInstance().getSearchResponseIspit(wildCardQuery);
 
             if (searchResponse != null) {
                 for (SearchHit hit : searchResponse.getHits()) {
                     try {
-                        Map<String, Object> map = hit.getSourceAsMap();
-                        int sifraIspita = Integer.parseInt(map.get("SifraIspita").toString());
-                        String nazivIspita = map.get("NazivIspita").toString();
-
-                        temporary = new Ispit(sifraIspita, nazivIspita);
-
+                        temporary = ElasticsearchServiceSearch.getInstance().getIspit(hit);
                     } catch (Exception e) {
                         System.out.println("Exception in fullTextSearch: " + e.getMessage());
                     }

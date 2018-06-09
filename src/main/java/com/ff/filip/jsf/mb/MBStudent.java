@@ -5,6 +5,7 @@
  */
 package com.ff.filip.jsf.mb;
 
+import com.ff.elasticsearch.service.search.ElasticsearchServiceSearch;
 import com.ff.filip.domen.Mesto;
 import com.ff.filip.domen.Student;
 import com.ff.filip.elasticsearch.administration.ESIndex;
@@ -197,52 +198,15 @@ public class MBStudent implements Serializable {
             QueryBuilder qb;
             SearchResponse searchResponse;
             if (flag) {
-                BoolQueryBuilder booleanQuery = QueryBuilders.boolQuery();
-
-                qb = QueryBuilders.queryStringQuery(wildCardQuery + "*")
-                        .defaultField("Ime")
-                        .defaultField("Prezime")
-                        .defaultOperator(Operator.OR);
-
-                QueryBuilder mestoIdQuery = QueryBuilders.termQuery("mesto.Ptt", mesto.getPtt());
-                booleanQuery.must(qb);
-                booleanQuery.must(mestoIdQuery);
-
-                searchResponse = ElasticClient.getInstance().getClient()
-                        .prepareSearch(ESIndex.STUDENT.name().toLowerCase())
-                        .setTypes(ESIndex.STUDENT.getTypes()[0])
-                        .setQuery(booleanQuery)
-                        .execute().actionGet();
+                searchResponse = ElasticsearchServiceSearch.getInstance().getSearchResponseStudentBoolQuery(wildCardQuery, mesto);
             } else {
-                qb = QueryBuilders.queryStringQuery(wildCardQuery + "*")
-                        .defaultField("Ime")
-                        .defaultField("Prezime")
-                        .defaultOperator(Operator.OR);
-
-                searchResponse = ElasticClient.getInstance().getClient()
-                        .prepareSearch(ESIndex.STUDENT.name().toLowerCase())
-                        .setTypes(ESIndex.STUDENT.getTypes()[0])
-                        .setQuery(qb)
-                        .execute().actionGet();
+                searchResponse = ElasticsearchServiceSearch.getInstance().getSearchResponseStudent(wildCardQuery);
             }
 
             if (searchResponse != null) {
                 for (SearchHit hit : searchResponse.getHits()) {
                     try {
-                        Map<String, Object> map = hit.getSourceAsMap();
-                        Map<String, Object> newMap = new HashMap<>();
-
-                        String brIndeksa = map.get("BrInd").toString();
-                        String ime = map.get("Ime").toString();
-                        String prezime = map.get("Prezime").toString();
-
-                        Map<String, Object> innerObject = (Map<String, Object>) map.get("mesto");
-                        int pttMesto = Integer.parseInt(innerObject.get("Ptt").toString());
-                        String nazivMestaM = innerObject.get("NazivMesta").toString();
-                        mesto = new Mesto(pttMesto, nazivMestaM);
-
-                        temporary = new Student(brIndeksa, ime, prezime, mesto);
-
+                        temporary = ElasticsearchServiceSearch.getInstance().getStudent(hit);
                     } catch (Exception e) {
                         System.out.println("Exception in fullTextSearch: " + e.getMessage());
                     }
